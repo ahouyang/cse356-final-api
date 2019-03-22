@@ -174,51 +174,13 @@ class MakeMove(Resource):
 
 class AddUser(Resource):
 	def post(self):
-		# TODO make try catch, return success or failure in json format
-		try:
-			args = parse_args_list(['username', 'password', 'email'])
-			username = args['username']
-			password = args['password']
-			email = args['email']
-			users = get_users_coll()
-			user = {}
-			user['username'] = username
-			user['password'] = password
-			user['email'] = email
-			user['verification'] = generate_code()
-			user['enabled'] = False
-			user['games'] = []
-			game = {}
-			now = datetime.datetime.now()
-			month = str(now.month) if len(str(now.month)) == 2 else '0' + str(now.month)
-			day = str(now.day) if len(str(now.day)) == 2 else '0' + str(now.day)
-			date = str(now.year) + '-' + month + '-' + day
-			game['id'] = 1
-			game['start_date'] = date
-			game['grid'] = [" "," "," "," "," "," "," "," "," "]
-			# user['games'].append(game)
-			user['current_game'] = game
-			winner = ''
-			user['score'] = {}
-			user['score']['wins'] = 0
-			user['score']['wgor'] = 0
-			user['score']['tie'] = 0
-
-			if users.find({"username":username}).count() > 0:
-				return {"status":"ERROR", "message":"The requested username has already been taken."}	
-
-			if users.find({"email":email}).count() > 0:
-				return {"status":"ERROR", "message":"The requested email has already been taken."}
-
-			url = 'http://130.245.170.88/verify?email=' + email + '&key=' + user['verification']
-			message = 'Subject: Verify Your Email\n\n Click here to verify your email\n' + url
-			send_email(email, message)
-			users.insert(user)
-			return {"status":"OK"}
-		
-		except Exception as e:
-			print(e, sys.stderr)			
-			return {"status":"ERROR"}
+		args = parse_args_list(['username', 'password', 'email'])
+		resp = account.validate_new(args['username'], args['email'])
+		if resp['status'] == 'OK':
+			createresp = account.adduser(args['username'], args['password'], args['email'])
+			return createresp
+		else:
+			return resp
 
 class Verify(Resource):
 	def post(self):
@@ -239,15 +201,10 @@ class Verify(Resource):
 			return {"status": "ERROR"}
 	def handleRequest(self, args):
 		# args = parse_args_list(['email', 'key'])
-		email = args['email']
-		key = args['key']
-		users = get_users_coll()
-		user = users.find_one({"email":email})
-
-		if user['verification'] == key or key == 'abracadabra':
-			users.update_one({"email":email}, {"$set":{"enabled":True}})
+		resp = account.verify(args['email'], args['key'])
+		if resp['status'] == 'OK':
 			return
-		raise Exception('incorrect verification key')
+		raise Exception(resp['message'])
 
 class Login(Resource):
 
@@ -270,31 +227,29 @@ class Login(Resource):
 		return make_response(render_template('login.html'),200,headers)
 	def post(self):
 		# validate user and password
-		args = parse_args_list(['username', 'password'])
+		args = parse_args_list['username', 'password']
+		resp = {}
+		micro_resp = account.authenticate(args['username'], args['password'])
 		users = get_users_coll()
 		currUser = users.find_one({'username': args['username']})
-		
-		resp = {}
-		if currUser != None:
-			if currUser['password'] == args['password']:
-				if currUser['enabled']:
-					print('####################### verification' + currUser['verification'], sys.stderr)
-					headers = {'Content-Type': 'application/json'}
-					response = make_response(jsonify({"status": "OK"}), 200, headers)
-					response.set_cookie('username', currUser['username'])
-					response.set_cookie('password', currUser['password'])
-					response.set_cookie('grid', str(currUser['current_game']['grid']))
-					return response
-				else:
-					resp['status'] = "ERROR"
-					resp['message'] = "User has not been validated. Check your email."
-					# print('#######################not validated', file=sys.stderr)
-					return resp
-			else:
-				resp['status'] = "ERROR"
-				resp['message'] = "The entered password is incorrect."
-				# print('#######################wrong password', file=sys.stderr)
-				return resp
+		if micro_resp['status'] == 'OK':
+			print('####################### verification' + currUser['verification'], sys.stderr)
+			headers = {'Content-Type': 'application/json'}
+			response = make_response(jsonify({"status": "OK"}), 200, headers)
+			response.set_cookie('username', currUser['username'])
+			response.set_cookie('password', currUser['password'])
+			response.set_cookie('grid', str(currUser['current_game']['grid']))
+			return response
+		elif micro_resp['message'] == 'not verified':
+			resp['status'] = "ERROR"
+			resp['message'] = "User has not been validated. Check your email."
+			# print('#######################not validated', file=sys.stderr)
+			return resp
+		elif micro_resp['message'] == 'incorrect password':
+			resp['status'] = "ERROR"
+			resp['message'] = "The entered password is incorrect."
+			# print('#######################wrong password', file=sys.stderr)
+			return resp
 		else:
 			resp['status'] = "ERROR"
 			resp['message'] = "The entered username doesn't exist."
