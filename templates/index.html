@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='index.css') }}"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='js.cookie.js')}}"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='index.js')}}"></script>
+	<title>Warmup Project 1</title>
+</head>
+<body>
+{% if stuff %}
+  <div>Hello {{ stuff.name }}, {{ stuff.date }}</div>
+{% endif %}
+<h2 id="winner"></h2>
+<div class="boxes">
+	<div id="0" class="box-item"> </div>
+	<div id="1" class="box-item"> </div>
+	<div id="2" class="box-item"> </div>
+	<div id="3" class="box-item"> </div>
+	<div id="4" class="box-item"> </div>
+	<div id="5" class="box-item"> </div>
+	<div id="6" class="box-item"> </div>
+	<div id="7" class="box-item"> </div>
+	<div id="8" class="box-item"> </div>
+</div>
+<form action="http://130.245.170.88/logout" method="post">
+	<input type="submit" id="logout" name="logout" value="Logout">
+</form>
+<input type="button" id="listgames" name="listgames" value="List Games">
+<div id="listgamesdiv"></div>
+
+<input type="text" id="gameID" name="gameID">
+<input type="button" id="getgame" name="getgame" value="Get Game">
+<div id="getgamediv"></div>
+
+<input type="button" id="getscore" name="getscore" value="Get Score">
+<div id="getscorediv"></div>
+
+</body>
+</html>
