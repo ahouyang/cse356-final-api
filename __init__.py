@@ -176,11 +176,11 @@ class AddUser(Resource):
 	def post(self):
 		args = parse_args_list(['username', 'password', 'email'])
 		resp = account.validate_new(args['username'], args['email'])
-		if resp['status'] == 'OK':
+		if resp.json()['status'] == 'OK':
 			createresp = account.adduser(args['username'], args['password'], args['email'])
-			return createresp
+			return createresp.json()
 		else:
-			return resp
+			return resp.json()
 
 class Verify(Resource):
 	def post(self):
@@ -202,9 +202,9 @@ class Verify(Resource):
 	def handleRequest(self, args):
 		# args = parse_args_list(['email', 'key'])
 		resp = account.verify(args['email'], args['key'])
-		if resp['status'] == 'OK':
+		if resp.json()['status'] == 'OK':
 			return
-		raise Exception(resp['message'])
+		raise Exception(resp.json()['message'])
 
 class Login(Resource):
 
@@ -227,12 +227,12 @@ class Login(Resource):
 		return make_response(render_template('login.html'),200,headers)
 	def post(self):
 		# validate user and password
-		args = parse_args_list['username', 'password']
+		args = parse_args_list(['username', 'password'])
 		resp = {}
 		micro_resp = account.authenticate(args['username'], args['password'])
 		users = get_users_coll()
 		currUser = users.find_one({'username': args['username']})
-		if micro_resp['status'] == 'OK':
+		if micro_resp.json()['status'] == 'OK':
 			print('####################### verification' + currUser['verification'], sys.stderr)
 			headers = {'Content-Type': 'application/json'}
 			response = make_response(jsonify({"status": "OK"}), 200, headers)

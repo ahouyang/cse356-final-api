@@ -10,7 +10,7 @@ $(function(){
 		// validation.password = pass;
 		var stringJson = JSON.stringify(validation);
 
-		$.post('http://130.245.170.88/login', $.param(validation, true), (data, status, xhr) => {
+		$.post('http://130.245.170.86/login', $.param(validation, true), (data, status, xhr) => {
 			var cookie = Cookies.get();
 			// cookie.grid.replace(/'/g, "\"");
 			// console.log(JSON.parse(cookie.grid.replace(/'/g, "\"").replace(/\\054/g,",")));

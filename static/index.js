@@ -36,7 +36,7 @@ $(function(){
 			console.log(grid);
 			console.log('run 4');
 			// $.post('http://localhost:5000/ttt/play', $.param(board, true), (data) => {
-			$.post('http://130.245.170.88/ttt/play', $.param({'move':e.target.id}, true), (data) => {
+			$.post('http://130.245.170.86/ttt/play', $.param({'move':e.target.id}, true), (data) => {
 				sleep(500).then(() => {
 					if(data.winner != ''){
 						switch(data.winner){
@@ -61,20 +61,20 @@ $(function(){
 	});
 
 	$('#listgames').click((e) => {
-		$.post('http://130.245.170.88/listgames', (data, textStatus, xhr) => {
+		$.post('http://130.245.170.86/listgames', (data, textStatus, xhr) => {
 			$('#listgamesdiv').text(JSON.stringify(data));
 		});
 	});
 
 	$('#getgame').click((e) => {
-		$.post('http://130.245.170.88/getgame', $.param({'id': $('#gameID').val()}),(data) => {
+		$.post('http://130.245.170.86/getgame', $.param({'id': $('#gameID').val()}),(data) => {
 			// Fill in getGame function here
 			$('#getgamediv').text(JSON.stringify(data));
 		});
 	});
 
 	$('#getscore').click((e) => {
-		$.post('http://130.245.170.88/getscore', (data) => {
+		$.post('http://130.245.170.86/getscore', (data) => {
 			// Fill in getGame function here
 			$('#getscorediv').text(JSON.stringify(data));
 		});
