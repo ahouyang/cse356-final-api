@@ -8,6 +8,7 @@ import smtplib, ssl
 import string
 import random
 import pika
+import AccountAPI as account
 
 app = Flask(__name__)
 api = Api(app)
@@ -284,19 +285,16 @@ class Login(Resource):
 					response.set_cookie('password', currUser['password'])
 					response.set_cookie('grid', str(currUser['current_game']['grid']))
 					return response
-
 				else:
 					resp['status'] = "ERROR"
 					resp['message'] = "User has not been validated. Check your email."
 					# print('#######################not validated', file=sys.stderr)
 					return resp
-					
 			else:
 				resp['status'] = "ERROR"
 				resp['message'] = "The entered password is incorrect."
 				# print('#######################wrong password', file=sys.stderr)
 				return resp
-
 		else:
 			resp['status'] = "ERROR"
 			resp['message'] = "The entered username doesn't exist."
