@@ -12,7 +12,7 @@ def add_question(title, body, tags, username):
 		})
 
 def get_question(id, user):
-	return requests.post(_url('/get_question'), json={
+	return requests.post(_url('/getquestion'), json={
 		'id': id,
 		'user':user,
 		})

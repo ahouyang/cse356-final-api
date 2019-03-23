@@ -143,8 +143,9 @@ class GetQuestion(Resource):
 			user = username
 		else:
 			user = request.remote_addr
-		resp = questions.get_question(id=id, user=user)
-		return resp.json()
+		resp2 = questions.get_question(id=id, user=user)
+		print("#######################" + str(resp2), sys.stderr)
+		return resp2.json()
 
 def parse_args_list(argnames):
 	parser = reqparse.RequestParser()
