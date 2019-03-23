@@ -85,7 +85,6 @@ class Login(Resource):
 			response = make_response(jsonify({"status": "OK"}), 200, headers)
 			response.set_cookie('username', currUser['username'])
 			response.set_cookie('password', currUser['password'])
-			response.set_cookie('grid', str(currUser['current_game']['grid']))
 			return response
 		elif micro_resp['message'] == 'not verified':
 			resp['status'] = "ERROR"
