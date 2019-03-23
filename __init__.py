@@ -139,7 +139,7 @@ class GetQuestion(Resource):
 		password = request.cookies.get('password')
 		user = None
 		resp = account.authenticate(username, password)
-		if resp['status'] == 'OK':
+		if resp.json()['status'] == 'OK':
 			user = username
 		else:
 			user = request.remote_addr
