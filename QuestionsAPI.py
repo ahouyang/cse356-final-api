@@ -10,3 +10,9 @@ def add_question(title, body, tags, username):
 		'body':body,
 		'tags':tags
 		})
+
+def get_question(id, user):
+	return requests.post(_url('/get_question'), json={
+		'id': id,
+		'user':user,
+		})

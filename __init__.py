@@ -133,6 +133,20 @@ class AddQuestion(Resource):
 		resp = questions.add_question(args['title'], args['body'], args['tags'], username)
 		return resp.json()
 
+class GetQuestion(Resource):
+	def get(self, id):
+		# check if user is logged in
+		username = request.cookies.get('username')
+		password = request.cookies.get('password')
+		user = None
+		resp = account.authenticate(username, password)
+		if resp['status'] == 'OK':
+			user = username
+		else:
+			user = request.remote_addr
+		resp = questions.get_question(id=id, user=user)
+		return resp.json()
+
 def parse_args_list(argnames):
 	parser = reqparse.RequestParser()
 	for arg in argnames:
@@ -153,6 +167,7 @@ api.add_resource(Verify, '/verify')
 api.add_resource(Login, '/login')
 api.add_resource(Logout, '/logout')
 api.add_resource(AddQuestion, '/questions/add')
+api.add_resource(GetQuestion, '/questions/<id>')
 
 
 if __name__ == '__main__':
