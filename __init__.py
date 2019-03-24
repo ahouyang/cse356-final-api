@@ -147,6 +147,24 @@ class GetQuestion(Resource):
 		print("#######################" + str(resp2), sys.stderr)
 		return resp2.json()
 
+class AddAnswer(Resource):
+	def post(self, id):
+		username = request.cookies.get('username')
+		password = request.cookies.get('password')
+		resp = account.authenticate(username, password)
+		if resp.json()['status'] == 'ERROR':
+			return resp.json()
+		parser = reqparse.RequestParser()
+		parser.add_argument('body')
+		parser.add_argument('media', action='append')
+		args = parser.parse_args()
+		resp2 = questions.add_answer(body=args['body'], username=username, id=id, media=args.get('media'))
+		return resp2.json()
+
+class GetAnswers(Resource):
+	def get(self, id):
+		return questions.get_answers(id).json()
+
 def parse_args_list(argnames):
 	parser = reqparse.RequestParser()
 	for arg in argnames:
@@ -168,6 +186,8 @@ api.add_resource(Login, '/login')
 api.add_resource(Logout, '/logout')
 api.add_resource(AddQuestion, '/questions/add')
 api.add_resource(GetQuestion, '/questions/<id>')
+api.add_resource(AddAnswer, '/questions/<id>/answers/add')
+api.add_resource(GetAnswers, '/questions/<id>/answers')
 
 
 if __name__ == '__main__':

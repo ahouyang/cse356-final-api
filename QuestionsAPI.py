@@ -16,3 +16,15 @@ def get_question(id, user):
 		'id': id,
 		'user':user,
 		})
+
+def add_answer(body, username, id, media=None):
+	req = {}
+	req['body'] = body
+	req['username'] = username
+	req['id'] = id
+	if media is not None:
+		req['media'] = media
+	return requests.post(_url('/addanswer'), json=req)
+
+def get_answers(id):
+	return requests.get(_url('/getanswers/' + id))
