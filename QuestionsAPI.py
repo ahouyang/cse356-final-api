@@ -28,3 +28,9 @@ def add_answer(body, username, id, media=None):
 
 def get_answers(id):
 	return requests.get(_url('/getanswers/' + id))
+
+def search(timestamp, limit):
+	return requests.post(_url('/search'), json={
+		'timestamp': timestamp,
+		'limit': limit
+		})

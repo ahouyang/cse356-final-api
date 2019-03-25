@@ -10,6 +10,7 @@ import random
 # import pika
 import AccountAPI as account
 import QuestionsAPI as questions
+import time
 
 app = Flask(__name__)
 api = Api(app)
@@ -160,6 +161,23 @@ class AddAnswer(Resource):
 		args = parser.parse_args()
 		resp2 = questions.add_answer(body=args['body'], username=username, id=id, media=args.get('media'))
 		return resp2.json()
+
+class Search(Resource):
+	def post(self):
+		args = parse_args_list(['timestamp', 'limit'])
+		timestamp = args['timestamp'] if args['timestamp'] is not None else time.time()
+		limit = None
+		if args['limit'] is not None:
+			if args['limit'] > 100:
+				limit = 100
+		else:
+			limit = 25
+		# accepted = args['accepted'] if args['accepted'] is not None else False
+		resp = questions.search(timestamp, limit)
+		return resp.json()
+
+
+
 
 class GetAnswers(Resource):
 	def get(self, id):
