@@ -1,4 +1,5 @@
 import requests
+import sys
 
 def _url(path):
 	return 'http://130.245.168.91' + path
@@ -30,7 +31,9 @@ def get_answers(id):
 	return requests.get(_url('/getanswers/' + id))
 
 def search(timestamp, limit):
-	return requests.post(_url('/search'), json={
-		'timestamp': timestamp,
-		'limit': limit
-		})
+	json = {
+	'timestamp': timestamp,
+	'limit': limit
+	}
+	print('-----------------------------' + str(json), sys.stderr)
+	return requests.post(_url('/search'), json=json)

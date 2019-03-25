@@ -164,9 +164,13 @@ class AddAnswer(Resource):
 
 class Search(Resource):
 	def post(self):
-		args = parse_args_list(['timestamp', 'limit'])
+		parser = reqparse.RequestParser()
+		parser.add_argument('timestamp', type=float)
+		parser.add_argument('limit', type=int)
+		args = parser.parse_args()
+		print('$$$$$$$$$$$$$$$$$$$$$$$$$$args:' + str(args), sys.stderr)
 		timestamp = args['timestamp'] if args['timestamp'] is not None else time.time()
-		limit = None
+		limit = args.get('limit')
 		if args['limit'] is not None:
 			if args['limit'] > 100:
 				limit = 100
@@ -206,7 +210,7 @@ api.add_resource(AddQuestion, '/questions/add')
 api.add_resource(GetQuestion, '/questions/<id>')
 api.add_resource(AddAnswer, '/questions/<id>/answers/add')
 api.add_resource(GetAnswers, '/questions/<id>/answers')
-
+api.add_resource(Search, '/search')
 
 if __name__ == '__main__':
 	app.run(debug=True)
