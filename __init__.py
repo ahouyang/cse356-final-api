@@ -37,7 +37,7 @@ class Verify(Resource):
 			return {"status":"OK"}
 		except Exception as e:
 			print(e, sys.stderr)
-			return {"status": "ERROR"}
+			return {"status": "error"}
 	def get(self):
 		# TODO, have this return html saying "your account is verified" instead of this json
 		# OK or ERROR JSON should only be returned by POST, not GET
@@ -46,7 +46,7 @@ class Verify(Resource):
 			return {"status":"OK"}
 		except Exception as e:
 			print(e, sys.stderr)
-			return {"status": "ERROR"}
+			return {"status": "error"}
 	def handleRequest(self, args):
 		# args = parse_args_list(['email', 'key'])
 		resp = account.verify(args['email'], args['key'])
@@ -87,18 +87,18 @@ class Login(Resource):
 			response.set_cookie('username', currUser['username'])
 			response.set_cookie('password', currUser['password'])
 			return response
-		elif micro_resp['message'] == 'not verified':
-			resp['status'] = "ERROR"
+		elif micro_resp.json()['message'] == 'not verified':
+			resp['status'] = "error"
 			resp['message'] = "User has not been validated. Check your email."
 			# print('#######################not validated', file=sys.stderr)
 			return resp
-		elif micro_resp['message'] == 'incorrect password':
-			resp['status'] = "ERROR"
+		elif micro_resp.json()['message'] == 'incorrect password':
+			resp['status'] = "error"
 			resp['message'] = "The entered password is incorrect."
 			# print('#######################wrong password', file=sys.stderr)
 			return resp
 		else:
-			resp['status'] = "ERROR"
+			resp['status'] = "error"
 			resp['message'] = "The entered username doesn't exist."
 			# print('#######################bad username:' + str(args['username']), file=sys.stderr)
 			return resp
@@ -115,7 +115,7 @@ class Logout(Resource):
 			return response
 		except Exception as e:
 			print(e, sys.stderr)
-			return {'status': "ERROR"}
+			return {'status': "error"}
 
 class AddQuestion(Resource):
 	def post(self):
@@ -123,7 +123,7 @@ class AddQuestion(Resource):
 		username = request.cookies.get('username')
 		password = request.cookies.get('password')
 		resp = account.authenticate(username, password)
-		if resp.json()['status'] == 'ERROR':
+		if resp.json()['status'] == 'error':
 			return resp.json()
 		parser = reqparse.RequestParser()
 		parser.add_argument('title')
@@ -153,7 +153,7 @@ class AddAnswer(Resource):
 		username = request.cookies.get('username')
 		password = request.cookies.get('password')
 		resp = account.authenticate(username, password)
-		if resp.json()['status'] == 'ERROR':
+		if resp.json()['status'] == 'error':
 			return resp.json()
 		parser = reqparse.RequestParser()
 		parser.add_argument('body')
@@ -196,7 +196,7 @@ def parse_args_list(argnames):
 
 def get_users_coll():
 	myclient = pymongo.MongoClient('mongodb://130.245.170.88:27017/')
-	mydb = myclient['warmup2']
+	mydb = myclient['finalproject']
 	users = mydb['users']
 	return users
 
