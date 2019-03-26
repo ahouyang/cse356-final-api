@@ -87,19 +87,19 @@ class Login(Resource):
 			response.set_cookie('username', currUser['username'])
 			response.set_cookie('password', currUser['password'])
 			return response
-		elif micro_resp.json()['message'] == 'not verified':
+		elif micro_resp.json()['error'] == 'not verified':
 			resp['status'] = "error"
-			resp['message'] = "User has not been validated. Check your email."
+			resp['error'] = "User has not been validated. Check your email."
 			# print('#######################not validated', file=sys.stderr)
 			return resp
-		elif micro_resp.json()['message'] == 'incorrect password':
+		elif micro_resp.json()['error'] == 'incorrect password':
 			resp['status'] = "error"
-			resp['message'] = "The entered password is incorrect."
+			resp['error'] = "The entered password is incorrect."
 			# print('#######################wrong password', file=sys.stderr)
 			return resp
 		else:
 			resp['status'] = "error"
-			resp['message'] = "The entered username doesn't exist."
+			resp['error'] = "The entered username doesn't exist."
 			# print('#######################bad username:' + str(args['username']), file=sys.stderr)
 			return resp
 
