@@ -130,8 +130,16 @@ class AddQuestion(Resource):
 		parser.add_argument('body')
 		parser.add_argument('tags', action='append')
 		args = parser.parse_args()
+		if args.get('title') is None:
+			return self._error('title required')
+		elif args.get('body') is None:
+			return self._error('body required')
+		elif args.get('tags') is None:
+			return self._error('tags required')
 		resp = questions.add_question(args['title'], args['body'], args['tags'], username)
 		return resp.json()
+	def _error(self, message):
+		return {'status': 'error', 'error': message}
 
 class GetQuestion(Resource):
 	def get(self, id):
@@ -159,6 +167,8 @@ class AddAnswer(Resource):
 		parser.add_argument('body')
 		parser.add_argument('media', action='append')
 		args = parser.parse_args()
+		if args.get('body') is None:
+			return {'status': 'error', 'error':'body is required'}
 		resp2 = questions.add_answer(body=args['body'], username=username, id=id, media=args.get('media'))
 		return resp2.json()
 
