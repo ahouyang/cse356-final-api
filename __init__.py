@@ -190,12 +190,13 @@ class Search(Resource):
 		resp = questions.search(timestamp, limit)
 		return resp.json()
 
-
-
-
 class GetAnswers(Resource):
 	def get(self, id):
 		return questions.get_answers(id).json()
+
+class TopTen(Resource):
+	def post(self):
+		return questions.get_topten().json()
 
 def parse_args_list(argnames):
 	parser = reqparse.RequestParser()
@@ -221,6 +222,7 @@ api.add_resource(GetQuestion, '/questions/<id>')
 api.add_resource(AddAnswer, '/questions/<id>/answers/add')
 api.add_resource(GetAnswers, '/questions/<id>/answers')
 api.add_resource(Search, '/search')
+api.add_resource(TopTen, '/topten')
 
 if __name__ == '__main__':
 	app.run(debug=True)

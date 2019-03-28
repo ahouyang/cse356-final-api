@@ -37,3 +37,6 @@ def search(timestamp, limit):
 	}
 	print('-----------------------------' + str(json), sys.stderr)
 	return requests.post(_url('/search'), json=json)
+
+def get_topten():
+	return requests.post(_url('/topten'))
