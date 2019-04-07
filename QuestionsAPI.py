@@ -19,7 +19,7 @@ def get_question(id, user):
 		})
 
 def delete_question(id, user):
-	return requests.post(_url('/deletequestion'), json={
+	return requests.delete(_url('/deletequestion'), json={
 		'id': id,
 		'user':user
 		})
