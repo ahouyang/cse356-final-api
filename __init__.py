@@ -17,8 +17,14 @@ api = Api(app)
 
 class Homepage(Resource):
 	def get(self):
-		headers = {'Content-Type': 'text/html'}
-		return make_response(render_template('signup.html'),200,headers)
+		username = request.cookies.get('username')
+		password = request.cookies.get('password')
+		resp = account.authenticate(username, password)
+		if resp.json()['status'] == 'OK':
+			headers = {'Content-Type': 'text/html'}
+
+			return make_response(render_template('signup.html', username = username),200,headers)
+
 
 class AddUser(Resource):
 	def post(self):

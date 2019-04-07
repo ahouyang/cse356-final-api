@@ -12,8 +12,14 @@
 </head>
 <body>
 	<div class="container-fluid">
+		{% if username %}
+		<div>Welcome {{ username }}</div>
+		<a href="http://130.245.170.86/logout" class="btn btn-default" id="logout">Logout</a>
+		<a href="http://130.245.170.86/questions/add" class="btn btn-default" id="postquestion">Post a Question</a>
+		{% else %}
 		<a href="http://130.245.170.86/login" class="btn btn-default" id="login">Login</a>
 		<a href="http://130.245.170.86/signup" class="btn btn-default" id="signup">Sign Up</a>
+		{% endif %}
 		<div id="questions"></div>
 	</div>
 </body>
