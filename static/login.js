@@ -17,7 +17,7 @@ $(function(){
 			console.log(cookie);
 			if(data.status == "OK"){
 				$('#error').text('');
-				$('#playgame').css('visibility', 'visible');
+				$('#enter').css('visibility', 'visible');
 			}
 			else{
 				$('#error').text(data.message);

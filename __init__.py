@@ -37,6 +37,11 @@ class AddUser(Resource):
 		else:
 			return resp.json()
 
+	def get(self):
+		headers = {'Content-Type': 'text/html'}
+		return make_response(render_template('signup.html'), 200, {'Content-Type': 'text/html'})
+
+
 class Verify(Resource):
 	def post(self):
 		try:
