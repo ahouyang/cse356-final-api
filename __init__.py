@@ -162,6 +162,21 @@ class GetQuestion(Resource):
 		resp2 = questions.get_question(id=id, user=user)
 		print("#######################" + str(resp2), sys.stderr)
 		return resp2.json()
+	
+	def delete(self, id):
+		# check if user is logged in
+		username = request.cookies.get('username')
+		password = request.cookies.get('password')
+		user = None
+		resp = account.authenticate(username, password)
+		if resp.json()['status'] == 'OK':
+			user = username
+		else:
+			user = request.remote_addr
+		resp2 = questions.delete_question(id=id, user=user)
+		print("#######################" + str(resp2), sys.stderr)
+		return resp2.json()
+
 
 class AddAnswer(Resource):
 	def post(self, id):

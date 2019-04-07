@@ -15,7 +15,13 @@ def add_question(title, body, tags, username):
 def get_question(id, user):
 	return requests.post(_url('/getquestion'), json={
 		'id': id,
-		'user':user,
+		'user':user
+		})
+
+def delete_question(id, user):
+	return requests.post(_url('/deletequestion'), json={
+		'id': id,
+		'user':user
 		})
 
 def add_answer(body, username, id, media=None):
