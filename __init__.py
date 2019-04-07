@@ -23,7 +23,8 @@ class Homepage(Resource):
 		if resp.json()['status'] == 'OK':
 			headers = {'Content-Type': 'text/html'}
 
-			return make_response(render_template('signup.html', username = username),200,headers)
+			return make_response(render_template('index.html', username = username),200,headers)
+		return make_response(render_template('index.html'), 200, {'Content-Type': 'text/html'})
 
 
 class AddUser(Resource):
