@@ -77,12 +77,7 @@ class Login(Resource):
 		if(currUser is None):
 			return make_response(render_template('login.html'),200,headers)
 		if(currUser['password'] == password):
-			now = datetime.datetime.now()
-			month =str(now.month) if len(str(now.month)) == 2 else '0' + str(now.month)
-			day =str(now.day) if len(str(now.day)) == 2 else '0' + str(now.day)
-			date = str(now.year) + '-' + month + '-' + day
-			stuff = {'name': username, 'date': date}
-			return make_response(render_template('index.html', stuff = stuff),200,headers)
+			return make_response(render_template('index.html', username=username),200,headers)
 
 		return make_response(render_template('login.html'),200,headers)
 	def post(self):
