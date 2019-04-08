@@ -199,6 +199,7 @@ class Search(Resource):
 		parser = reqparse.RequestParser()
 		parser.add_argument('timestamp', type=float)
 		parser.add_argument('limit', type=int)
+		parser.add_argument('q')
 		args = parser.parse_args()
 		print('$$$$$$$$$$$$$$$$$$$$$$$$$$args:' + str(args), sys.stderr)
 		timestamp = args['timestamp'] if args['timestamp'] is not None else time.time()
@@ -209,7 +210,7 @@ class Search(Resource):
 		else:
 			limit = 25
 		# accepted = args['accepted'] if args['accepted'] is not None else False
-		resp = questions.search(timestamp, limit)
+		resp = questions.search(timestamp, limit, args['q'])
 		return resp.json()
 
 class GetAnswers(Resource):
