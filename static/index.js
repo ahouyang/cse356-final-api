@@ -6,7 +6,8 @@ $(function(){
 		for(var i = 0; i < questions.length; i++){
 			var question = questions[i];
 			console.log(question);
-			$('#questions').append('<a href="http://" id="' + question.id + '" class="question"></a>');
+			$('#questions').append('<a href="http://130.245.170.86/questions/' 
+				+ questions.id + '/page id="' + question.id + '" class="question"></a>');
 			$('#' + question.id).append('<h2>' + question.title + '</h2><h4>' + question.body + '</h4>');
 		}
 	});

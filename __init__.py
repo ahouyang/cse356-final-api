@@ -257,6 +257,18 @@ class GetUserAnswers(Resource):
 			return resp.json()
 		return account.getuserA(username).json()
 
+class GetQuestionPage(Resource):
+	def get(self, id):
+		cookieuser = request.cookies.get('username')
+		password = request.cookies.get('password')
+		if cookieuser != username:
+			return {'status': 'error'}
+		resp = account.authenticate(cookieuser, password)
+		if resp.json()['status'] == 'error':
+			return resp.json()
+		headers = {'Content-Type': 'text/html'}
+		return make_response(render_template('viewquestion.html'), id=id, username=cookieuser)
+
 def parse_args_list(argnames):
 	parser = reqparse.RequestParser()
 	for arg in argnames:
@@ -286,6 +298,7 @@ api.add_resource(PostQuestion, '/postquestion')
 api.add_resource(GetUser, '/user/<username>')
 api.add_resource(GetUserQuestions, '/user/<username>/questions')
 api.add_resource(GetUserAnswers, '/user/<username>/answers')
+api.add_resource(GetQuestionPage, '/questions/<id>/page')
 
 if __name__ == '__main__':
 	app.run(debug=True)
