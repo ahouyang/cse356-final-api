@@ -220,6 +220,10 @@ class TopTen(Resource):
 	def post(self):
 		return questions.get_topten().json()
 
+class PostQuestion(Resource):
+	def get(self):
+		return make_response(render_template('addquestion.html'), 200, {'Content-Type': 'text/html'})
+
 def parse_args_list(argnames):
 	parser = reqparse.RequestParser()
 	for arg in argnames:
@@ -245,6 +249,7 @@ api.add_resource(AddAnswer, '/questions/<id>/answers/add')
 api.add_resource(GetAnswers, '/questions/<id>/answers')
 api.add_resource(Search, '/search')
 api.add_resource(TopTen, '/topten')
+api.add_resource(PostQuestion, '/postquestion')
 
 if __name__ == '__main__':
 	app.run(debug=True)

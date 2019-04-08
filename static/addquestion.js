@@ -5,7 +5,7 @@ $('#postquestion').click(function(event) {
 	var tagstring = $('#tags').val();
 	var tags = tagstring.split(' ');
 	request.tags = tags;
-	$.post('http://130.245.170.86/questions/add', $.param(request, true), (data, status, xhr) => {
+	$.post('http://130.245.170.86/postquestion', $.param(request, true), (data, status, xhr) => {
 			
 			
 			if(data.status == "OK"){
