@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Warmup Project 2</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='addquestion.css') }}"/>
+	<script type="text/javascript" src="{{url_for('static', filename='js.cookie.js')}}"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='addquestion.js')}}"></script>
+</head>
+<body>
+<h3>Post a Question</h3><br>
+	Title:<br>
+	<input type="text" name="title" id='title'><br>
+	Body:<br>
+	<textarea rows="20" cols="70" name="body" id='body'></textarea><br>
+	Tags (separate by space):<br>
+	<input type="text" name="tags" id='tags'><br>
+	<input id="postquestion" type="button" value="Post!">
+	<div id="submitted"></div>
+	<a href="http://130.245.170.86/" class="btn btn-default" id="return">Return to site</a>
+</body>
+</html>
