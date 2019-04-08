@@ -235,6 +235,28 @@ class GetUser(Resource):
 			return resp.json()
 		return account.getuser(username).json()
 
+class GetUserQuestions(Resource):
+	def get(self, username):
+		cookieuser = request.cookies.get('username')
+		password = request.cookies.get('password')
+		if cookieuser != username:
+			return {'status': 'error'}
+		resp = account.authenticate(cookieuser, password)
+		if resp.json()['status'] == 'error':
+			return resp.json()
+		return account.getuserQ(username).json()
+
+class GetUserAnswers(Resource):
+	def get(self, username):
+		cookieuser = request.cookies.get('username')
+		password = request.cookies.get('password')
+		if cookieuser != username:
+			return {'status': 'error'}
+		resp = account.authenticate(cookieuser, password)
+		if resp.json()['status'] == 'error':
+			return resp.json()
+		return account.getuserA(username).json()
+
 def parse_args_list(argnames):
 	parser = reqparse.RequestParser()
 	for arg in argnames:
@@ -262,6 +284,8 @@ api.add_resource(Search, '/search')
 api.add_resource(TopTen, '/topten')
 api.add_resource(PostQuestion, '/postquestion')
 api.add_resource(GetUser, '/user/<username>')
+api.add_resource(GetUserQuestions, '/user/<username>/questions')
+api.add_resource(GetUserAnswers, '/user/<username>/answers')
 
 if __name__ == '__main__':
 	app.run(debug=True)

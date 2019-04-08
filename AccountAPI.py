@@ -33,3 +33,12 @@ def getuser(username):
 		'username':username
 		})
 
+def getuserQ(username):
+	return requests.get(_url('/getuserquestions'), json={
+		'username':username
+		})
+
+def getuserA(username):
+	return requests.get(_url('/getuseranswers'), json={
+		'username':username
+		})
