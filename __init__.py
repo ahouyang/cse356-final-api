@@ -217,7 +217,7 @@ class GetAnswers(Resource):
 		return questions.get_answers(id).json()
 
 class TopTen(Resource):
-	def post(self):
+	def get(self):
 		return questions.get_topten().json()
 
 class PostQuestion(Resource):

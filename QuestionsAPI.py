@@ -45,4 +45,4 @@ def search(timestamp, limit):
 	return requests.post(_url('/search'), json=json)
 
 def get_topten():
-	return requests.post(_url('/topten'))
+	return requests.get(_url('/topten'))
