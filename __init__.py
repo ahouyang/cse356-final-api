@@ -262,13 +262,11 @@ class GetQuestionPage(Resource):
 	def get(self, id):
 		cookieuser = request.cookies.get('username')
 		password = request.cookies.get('password')
-		if cookieuser != username:
-			return {'status': 'error'}
 		resp = account.authenticate(cookieuser, password)
 		if resp.json()['status'] == 'error':
 			return resp.json()
 		headers = {'Content-Type': 'text/html'}
-		return make_response(render_template('viewquestion.html'), id=id, username=cookieuser)
+		return make_response(render_template('viewquestion.html', id=id, username=cookieuser))
 
 def parse_args_list(argnames):
 	parser = reqparse.RequestParser()
