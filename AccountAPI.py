@@ -26,4 +26,10 @@ def adduser(username, password, email):
 		'username': username,
 		'password': password,
 		'email': email
-		})	
+		})
+
+def getuser(username):
+	return requests.get(_url('/getuser'), json={
+		'username':username
+		})
+

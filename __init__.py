@@ -224,6 +224,17 @@ class PostQuestion(Resource):
 	def get(self):
 		return make_response(render_template('addquestion.html'), 200, {'Content-Type': 'text/html'})
 
+class GetUser(Resource):
+	def get(self, username):
+		cookieuser = request.cookies.get('username')
+		password = request.cookies.get('password')
+		if cookieuser != username:
+			return {'status': 'error'}
+		resp = account.authenticate(cookieuser, password)
+		if resp.json()['status'] == 'error':
+			return resp.json()
+		return account.getuser(username).json()
+
 def parse_args_list(argnames):
 	parser = reqparse.RequestParser()
 	for arg in argnames:
@@ -250,6 +261,7 @@ api.add_resource(GetAnswers, '/questions/<id>/answers')
 api.add_resource(Search, '/search')
 api.add_resource(TopTen, '/topten')
 api.add_resource(PostQuestion, '/postquestion')
+api.add_resource(GetUser, '/user/<username>')
 
 if __name__ == '__main__':
 	app.run(debug=True)
