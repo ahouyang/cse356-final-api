@@ -173,7 +173,10 @@ class GetQuestion(Resource):
 			user = username
 		else:
 			user = request.remote_addr
+			return {'status': 'error', 'error': 'not logged in'}, 400
 		resp2 = questions.delete_question(id=id, user=user)
+		if resp2.json()['status'] == 'ERROR':
+			return {'status': 'error', 'error': 'wrong user'}, 400
 		print("#######################" + str(resp2), sys.stderr)
 		return resp2.json()
 
@@ -227,35 +230,35 @@ class PostQuestion(Resource):
 
 class GetUser(Resource):
 	def get(self, username):
-		cookieuser = request.cookies.get('username')
-		password = request.cookies.get('password')
-		if cookieuser != username:
-			return {'status': 'error'}
-		resp = account.authenticate(cookieuser, password)
-		if resp.json()['status'] == 'error':
-			return resp.json()
+		#cookieuser = request.cookies.get('username')
+		#password = request.cookies.get('password')
+		#if cookieuser != username:
+		#	return {'status': 'error'}
+		#resp = account.authenticate(cookieuser, password)
+		#if resp.json()['status'] == 'error':
+		#	return resp.json()
 		return account.getuser(username).json()
 
 class GetUserQuestions(Resource):
 	def get(self, username):
-		cookieuser = request.cookies.get('username')
-		password = request.cookies.get('password')
-		if cookieuser != username:
-			return {'status': 'error'}
-		resp = account.authenticate(cookieuser, password)
-		if resp.json()['status'] == 'error':
-			return resp.json()
+		#cookieuser = request.cookies.get('username')
+		#password = request.cookies.get('password')
+		#if cookieuser != username:
+		#	return {'status': 'error'}
+		#resp = account.authenticate(cookieuser, password)
+		#if resp.json()['status'] == 'error':
+		#	return resp.json()
 		return account.getuserQ(username).json()
 
 class GetUserAnswers(Resource):
 	def get(self, username):
-		cookieuser = request.cookies.get('username')
-		password = request.cookies.get('password')
-		if cookieuser != username:
-			return {'status': 'error'}
-		resp = account.authenticate(cookieuser, password)
-		if resp.json()['status'] == 'error':
-			return resp.json()
+		#cookieuser = request.cookies.get('username')
+		#password = request.cookies.get('password')
+		#if cookieuser != username:
+	#		return {'status': 'error'}
+		#resp = account.authenticate(cookieuser, password)
+		#if resp.json()['status'] == 'error':
+		#	return resp.json()
 		return account.getuserA(username).json()
 
 class GetQuestionPage(Resource):
