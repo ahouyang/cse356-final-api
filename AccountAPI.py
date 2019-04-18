@@ -29,16 +29,10 @@ def adduser(username, password, email):
 		})
 
 def getuser(username):
-	return requests.get(_url('/getuser'), json={
-		'username':username
-		})
+	return requests.get(_url('/getuser/' + username))
 
 def getuserQ(username):
-	return requests.get(_url('/getuserquestions'), json={
-		'username':username
-		})
+	return requests.get(_url('/getuserquestions/' + username))
 
 def getuserA(username):
-	return requests.get(_url('/getuseranswers'), json={
-		'username':username
-		})
+	return requests.get(_url('/getuseranswers/' + username))

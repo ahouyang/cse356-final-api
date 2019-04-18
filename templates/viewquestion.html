@@ -2,7 +2,9 @@
 <html>
 <head>
 	<title>Final Project</title>
-	<meta name="questionID" content="{{ questionID }}">
+	{% if id %}
+	<meta name="questionID" content="{{ id }}">
+	{% endif %}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="{{url_for('static', filename='js.cookie.js')}}"></script>
@@ -11,12 +13,13 @@
 <body>
 	<h2 id="title"></h2><br>
 	<p id="body"></p><br>
+	<div id="view_count"></div>
 	<div id="posterstamp"></div>
 	<div id="answers"></div>
 	{% if username %}
 	<h3>Submit an Answer!</h3>
 	<textarea rows="20" cols="70" name="body" id='body'></textarea><br>
-	<input type="button" id="postanswer">
+	<input type="button" id="postanswer" value="Submit!">
 	{% endif %}
 </body>
 </html>
