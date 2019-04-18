@@ -47,3 +47,9 @@ def search(timestamp, limit, searchquery):
 
 def get_topten():
 	return requests.get(_url('/topten'))
+
+def upvote(action):
+	json = {
+	'upvote': action
+	}
+	return requests.post(_url('/upvote'))

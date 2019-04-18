@@ -270,6 +270,22 @@ class GetQuestionPage(Resource):
 		headers = {'Content-Type': 'text/html'}
 		return make_response(render_template('viewquestion.html'), id=id, username=cookieuser)
 
+class UpvoteQuestion(Resource):
+	def post(self, id):
+		username = request.cookies.get('username')
+		password = request.cookies.get('password')
+		resp = account.authenticate(username, password)
+		if resp.json()['status'] == 'error':
+			return resp.json()
+		args = request.args
+		action = None
+		if args['upvote'] is None:
+			action = True
+		else:
+			action = args['upvote']
+		return questions.upvote(action)
+
+
 def parse_args_list(argnames):
 	parser = reqparse.RequestParser()
 	for arg in argnames:
@@ -300,6 +316,7 @@ api.add_resource(GetUser, '/user/<username>')
 api.add_resource(GetUserQuestions, '/user/<username>/questions')
 api.add_resource(GetUserAnswers, '/user/<username>/answers')
 api.add_resource(GetQuestionPage, '/questions/<id>/page')
+api.add_resource(UpvoteQuestion, '/questions/<id>/upvote')
 
 if __name__ == '__main__':
 	app.run(debug=True)
