@@ -50,7 +50,7 @@ def get_topten():
 
 def upvote(action, questionID, user):
 	json = {
-	'upvote': action
+	'action': action,
 	'username' : user
 	}
-	return requests.post(_url('/upvote/' + questionID))
+	return requests.post(_url('/upvote/' + questionID), json=json)

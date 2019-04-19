@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, make_response, jsonify
-from flask_restful import Resource, Api, reqparse
+from flask_restful import Resource, Api, reqparse, inputs
 import pymongo
 import datetime
 import sys
@@ -278,15 +278,22 @@ class UpvoteQuestion(Resource):
 		username = request.cookies.get('username')
 		password = request.cookies.get('password')
 		resp = account.authenticate(username, password)
+		print('---------------------' + str(resp.json()), sys.stderr)
 		if resp.json()['status'] == 'error':
+			print('---------------------' + str('hellooo'), sys.stderr)
 			return resp.json()
-		args = request.args
+		parser = reqparse.RequestParser()
+		print('******************************' + str('1st'), sys.stderr)
+		parser.add_argument('upvote', type=inputs.boolean)
+		print('******************************' + str('2nd'), sys.stderr)
+		args = parser.parse_args()
+		print('******************************' + str(type(args.get('upvote'))), sys.stderr)
 		action = None
 		if args.get('upvote') is None:
 			action = True
 		else:
 			action = args['upvote']
-		return questions.upvote(action, id, username)
+		return questions.upvote(action, id, username).json()
 
 
 def parse_args_list(argnames):
