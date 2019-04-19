@@ -1,11 +1,21 @@
 $(function(){
 	var questionID = $('meta[name=questionID]').attr("content");
 	$.get('http://130.245.170.86/questions/' + questionID, (data, status, xhr) => {
-		$('#title').text(data.title);
-		$('#body').text(data.body);
-		var posterstamp = 'Submitted by ' + data.user.username + ' on ' + data.timestamp;
+		console.log(data);
+		$('#title').text(data.question.title);
+		$('#body').text(data.question.body);
+		var date = new Date(data.question.timestamp*1000);
+		// Hours part from the timestamp
+		var hours = date.getHours();
+		// Minutes part from the timestamp
+		var minutes = "0" + date.getMinutes();
+		// Seconds part from the timestamp
+		var seconds = "0" + date.getSeconds();
+		// Will display time in 10:30:23 format
+		var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+		var posterstamp = 'Submitted by ' + data.question.user.username + ' on ' + formattedTime;
 		$('#posterstamp').text(posterstamp);
-		var views = 'View Count: ' + data.view_count;
+		var views = 'View Count: ' + data.question.view_count;
 		$('#view_count').text(views);
 	});
 

@@ -263,12 +263,14 @@ class GetUserAnswers(Resource):
 
 class GetQuestionPage(Resource):
 	def get(self, id):
-		# cookieuser = request.cookies.get('username')
-		# password = request.cookies.get('password')
-		# resp = account.authenticate(cookieuser, password)
-		# if resp.json()['status'] == 'error':
-		# 	return resp.json()
+		cookieuser = request.cookies.get('username')
+		password = request.cookies.get('password')
+		resp = account.authenticate(cookieuser, password)
+		if resp.json()['status'] == 'error':
+			cookieuser = None
 		headers = {'Content-Type': 'text/html'}
+		if cookieuser is None:
+			return make_response(render_template('viewquestion.html', id=id))
 		return make_response(render_template('viewquestion.html', id=id, username=cookieuser))
 
 class UpvoteQuestion(Resource):
