@@ -280,11 +280,11 @@ class UpvoteQuestion(Resource):
 			return resp.json()
 		args = request.args
 		action = None
-		if args['upvote'] is None:
+		if args.get('upvote') is None:
 			action = True
 		else:
 			action = args['upvote']
-		return questions.upvote(action)
+		return questions.upvote(action, id, username)
 
 
 def parse_args_list(argnames):
