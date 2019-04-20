@@ -327,7 +327,7 @@ class AcceptAnswer(Resource):
 		if resp.json()['status'] == 'error':
 			#print('---------------------' + str('hellooo'), sys.stderr)
 			return resp.json()
-		return questions.acceptanswer(id, username)
+		return questions.acceptanswer(id, username).json()
 		
 
 def parse_args_list(argnames):
