@@ -278,21 +278,22 @@ class UpvoteQuestion(Resource):
 		username = request.cookies.get('username')
 		password = request.cookies.get('password')
 		resp = account.authenticate(username, password)
-		print('---------------------' + str(resp.json()), sys.stderr)
+		#print('---------------------' + str(resp.json()), sys.stderr)
 		if resp.json()['status'] == 'error':
-			print('---------------------' + str('hellooo'), sys.stderr)
+			#print('---------------------' + str('hellooo'), sys.stderr)
 			return resp.json()
 		parser = reqparse.RequestParser()
-		print('******************************' + str('1st'), sys.stderr)
+		#print('******************************' + str('1st'), sys.stderr)
 		parser.add_argument('upvote', type=inputs.boolean)
-		print('******************************' + str('2nd'), sys.stderr)
+		#print('******************************' + str('2nd'), sys.stderr)
 		args = parser.parse_args()
-		print('******************************' + str(type(args.get('upvote'))), sys.stderr)
+		print('******************************' + str(args['upvote']), sys.stderr)
 		action = None
 		if args.get('upvote') is None:
 			action = True
 		else:
 			action = args['upvote']
+		print(str(action) + '<- action', sys.stderr)
 		return questions.upvote(action, id, username).json()
 
 
