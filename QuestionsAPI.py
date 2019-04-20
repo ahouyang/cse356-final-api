@@ -61,3 +61,9 @@ def upvoteanswer(action, questionID, user):
 	'username' : user
 	}
 	return requests.post(_url('/upvoteanswer/' + questionID), json=json)
+
+def acceptanswer(answerid, username):
+	json = {
+	'username': username
+	}
+	return requests.post(_url('/acceptanswer/' + answerid), json=json)

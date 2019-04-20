@@ -318,6 +318,18 @@ class UpvoteAnswer(Resource):
 		print(str(action) + '<- action', sys.stderr)
 		return questions.upvoteanswer(action, id, username).json()
 
+class AcceptAnswer(Resource):
+	def post(self, id):
+		username = request.cookies.get('username')
+		password = request.cookies.get('password')
+		resp = account.authenticate(username, password)
+		#print('---------------------' + str(resp.json()), sys.stderr)
+		if resp.json()['status'] == 'error':
+			#print('---------------------' + str('hellooo'), sys.stderr)
+			return resp.json()
+		return questions.acceptanswer(id, username)
+		
+
 def parse_args_list(argnames):
 	parser = reqparse.RequestParser()
 	for arg in argnames:
@@ -350,6 +362,7 @@ api.add_resource(GetUserAnswers, '/user/<username>/answers')
 api.add_resource(GetQuestionPage, '/questions/<id>/page')
 api.add_resource(UpvoteQuestion, '/questions/<id>/upvote')
 api.add_resource(UpvoteAnswer, '/answers/<id>/upvote')
+api.add_resource(AcceptAnswer, '/answers/<id>/accept')
 
 if __name__ == '__main__':
 	app.run(debug=True)
