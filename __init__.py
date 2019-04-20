@@ -295,7 +295,28 @@ class UpvoteQuestion(Resource):
 			action = args['upvote']
 		print(str(action) + '<- action', sys.stderr)
 		return questions.upvote(action, id, username).json()
-
+class UpvoteAnswer(Resource):
+	def post(self, id):
+		username = request.cookies.get('username')
+		password = request.cookies.get('password')
+		resp = account.authenticate(username, password)
+		#print('---------------------' + str(resp.json()), sys.stderr)
+		if resp.json()['status'] == 'error':
+			#print('---------------------' + str('hellooo'), sys.stderr)
+			return resp.json()
+		parser = reqparse.RequestParser()
+		#print('******************************' + str('1st'), sys.stderr)
+		parser.add_argument('upvote', type=inputs.boolean)
+		#print('******************************' + str('2nd'), sys.stderr)
+		args = parser.parse_args()
+		print('******************************' + str(args['upvote']), sys.stderr)
+		action = None
+		if args.get('upvote') is None:
+			action = True
+		else:
+			action = args['upvote']
+		print(str(action) + '<- action', sys.stderr)
+		return questions.upvoteanswer(action, id, username).json()
 
 def parse_args_list(argnames):
 	parser = reqparse.RequestParser()
@@ -328,6 +349,7 @@ api.add_resource(GetUserQuestions, '/user/<username>/questions')
 api.add_resource(GetUserAnswers, '/user/<username>/answers')
 api.add_resource(GetQuestionPage, '/questions/<id>/page')
 api.add_resource(UpvoteQuestion, '/questions/<id>/upvote')
+api.add_resource(UpvoteAnswer, '/answers/<id>/upvote')
 
 if __name__ == '__main__':
 	app.run(debug=True)
