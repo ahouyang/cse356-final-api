@@ -11,6 +11,7 @@ import random
 import AccountAPI as account
 import QuestionsAPI as questions
 import time
+from cassandra.cluster import Cluster
 
 app = Flask(__name__)
 api = Api(app)
@@ -328,6 +329,35 @@ class AcceptAnswer(Resource):
 			#print('---------------------' + str('hellooo'), sys.stderr)
 			return resp.json()
 		return questions.acceptanswer(id, username).json()
+
+
+class AddMedia(Resource):
+	def post(self):
+		username = request.cookies.get('username')
+		password = request.cookies.get('password')
+		resp = account.authenticate(username, password)
+		#print('---------------------' + str(resp.json()), sys.stderr)
+		if resp.json()['status'] == 'error':
+			#print('---------------------' + str('hellooo'), sys.stderr)
+			return resp.json()
+		file = request.files.get('content')
+		b = bytearray(file.read())
+		cluster = Cluster(['130.245.171.50'])
+		session = cluster.connect(keyspace='StackOverflow')
+		media_id = self._generate_code()
+		cqlinsert = 'insert into media (id, content) values (%s, %s);'
+		session.execute(cqlinsert, (media_id, b))
+		resp = {}
+		resp['status'] = 'OK'
+		resp['id'] = media_id
+		return resp
+	def _generate_code(self):
+		return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+
+# class GetMedia(Resource):
+# 	def get(self, id):
+# 		cluster = Cluster(['130.245.171.50'])
+# 		session = cluster.connect(keyspace='StackOverflow')
 		
 
 def parse_args_list(argnames):
@@ -363,6 +393,7 @@ api.add_resource(GetQuestionPage, '/questions/<id>/page')
 api.add_resource(UpvoteQuestion, '/questions/<id>/upvote')
 api.add_resource(UpvoteAnswer, '/answers/<id>/upvote')
 api.add_resource(AcceptAnswer, '/answers/<id>/accept')
+api.add_resource(AddMedia, '/addmedia')
 
 if __name__ == '__main__':
 	app.run(debug=True)
