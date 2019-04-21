@@ -341,12 +341,14 @@ class AddMedia(Resource):
 			#print('---------------------' + str('hellooo'), sys.stderr)
 			return resp.json()
 		file = request.files.get('content')
+		filetype = file.content_type
+		print('-------------------------' + str(file.content_type), sys.stderr)
 		b = bytearray(file.read())
 		cluster = Cluster(['130.245.171.50'])
-		session = cluster.connect(keyspace='StackOverflow')
+		session = cluster.connect(keyspace='stackoverflow')
 		media_id = self._generate_code()
-		cqlinsert = 'insert into media (id, content) values (%s, %s);'
-		session.execute(cqlinsert, (media_id, b))
+		cqlinsert = 'insert into media (id, content, type) values (%s, %s, %s);'
+		session.execute(cqlinsert, (media_id, b, filetype))
 		resp = {}
 		resp['status'] = 'OK'
 		resp['id'] = media_id
