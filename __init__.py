@@ -361,8 +361,8 @@ class GetMedia(Resource):
 	def get(self, id):
 		cluster = Cluster(['130.245.171.50'])
 		session = cluster.connect(keyspace='stackoverflow')
-		cqlselect = 'select * from media where id = \'%s\';'
-		row = session.execute(cqlselect, (id))[0]
+		cqlselect = "select * from media where id = '" + id + "';"
+		row = session.execute(cqlselect)[0]
 		file = row[1]
 		filetype = row[2]
 		response = make_response(file)
@@ -404,6 +404,7 @@ api.add_resource(UpvoteQuestion, '/questions/<id>/upvote')
 api.add_resource(UpvoteAnswer, '/answers/<id>/upvote')
 api.add_resource(AcceptAnswer, '/answers/<id>/accept')
 api.add_resource(AddMedia, '/addmedia')
+api.add_resource(GetMedia, '/media/<id>')
 
 if __name__ == '__main__':
 	app.run(debug=True)
