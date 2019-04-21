@@ -204,6 +204,10 @@ class Search(Resource):
 		parser.add_argument('timestamp', type=float)
 		parser.add_argument('limit', type=int)
 		parser.add_argument('q')
+		parser.add_argument('sort_by')
+		parser.add_argument('tags', action='append')
+		parser.add_argument('has_media', type=inputs.boolean)
+		parser.add_argument('accepted', type=inputs.boolean)
 		args = parser.parse_args()
 		print('$$$$$$$$$$$$$$$$$$$$$$$$$$args:' + str(args), sys.stderr)
 		timestamp = args['timestamp'] if args['timestamp'] is not None else time.time()
@@ -214,7 +218,8 @@ class Search(Resource):
 		else:
 			limit = 25
 		# accepted = args['accepted'] if args['accepted'] is not None else False
-		resp = questions.search(timestamp, limit, args['q'])
+		resp = questions.search(timestamp, limit, args['q'], args['sort_by'], 
+									args['tags'], args['has_media'], args['accepted'])
 		return resp.json()
 
 class GetAnswers(Resource):

@@ -36,11 +36,15 @@ def add_answer(body, username, id, media=None):
 def get_answers(id):
 	return requests.get(_url('/getanswers/' + id))
 
-def search(timestamp, limit, searchquery):
+def search(timestamp, limit, searchquery, sort_by, tags, has_media, accepted):
 	json = {
 	'timestamp': timestamp,
 	'limit': limit,
-	'query': searchquery
+	'query': searchquery,
+	'sort_by': sort_by,
+	'tags': tags,
+	'has_media': has_media,
+	'accepted': accepted
 	}
 	print('-----------------------------' + str(json), sys.stderr)
 	return requests.post(_url('/search'), json=json)
