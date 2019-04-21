@@ -356,11 +356,19 @@ class AddMedia(Resource):
 	def _generate_code(self):
 		return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
 
-# class GetMedia(Resource):
-# 	def get(self, id):
-# 		cluster = Cluster(['130.245.171.50'])
-# 		session = cluster.connect(keyspace='StackOverflow')
-		
+
+class GetMedia(Resource):
+	def get(self, id):
+		cluster = Cluster(['130.245.171.50'])
+		session = cluster.connect(keyspace='stackoverflow')
+		cqlselect = 'select * from media where id = \'%s\';'
+		row = session.execute(cqlselect, (id))[0]
+		file = row[1]
+		filetype = row[2]
+		response = make_response(file)
+		response.headers.set('Content-Type', filetype)
+		return response
+
 
 def parse_args_list(argnames):
 	parser = reqparse.RequestParser()
