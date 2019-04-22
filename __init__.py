@@ -23,7 +23,6 @@ class Homepage(Resource):
 		resp = account.authenticate(username, password)
 		if resp.json()['status'] == 'OK':
 			headers = {'Content-Type': 'text/html'}
-
 			return make_response(render_template('index.html', username = username),200,headers)
 		return make_response(render_template('index.html'), 200, {'Content-Type': 'text/html'})
 
@@ -36,7 +35,7 @@ class AddUser(Resource):
 			createresp = account.adduser(args['username'], args['password'], args['email'])
 			return createresp.json()
 		else:
-			return resp.json()
+			return resp.json(), 400
 
 	def get(self):
 		headers = {'Content-Type': 'text/html'}
@@ -50,7 +49,7 @@ class Verify(Resource):
 			return {"status":"OK"}
 		except Exception as e:
 			print(e, sys.stderr)
-			return {"status": "error"}
+			return {"status": "error"}, 400
 	def get(self):
 		# TODO, have this return html saying "your account is verified" instead of this json
 		# OK or ERROR JSON should only be returned by POST, not GET
@@ -59,7 +58,7 @@ class Verify(Resource):
 			return {"status":"OK"}
 		except Exception as e:
 			print(e, sys.stderr)
-			return {"status": "error"}
+			return {"status": "error"}, 400
 	def handleRequest(self, args):
 		# args = parse_args_list(['email', 'key'])
 		resp = account.verify(args['email'], args['key'])
@@ -89,7 +88,7 @@ class Login(Resource):
 		users = get_users_coll()
 		currUser = users.find_one({'username': args['username']})
 		if micro_resp.json()['status'] == 'OK':
-			print('####################### verification' + currUser['verification'], sys.stderr)
+			#print('####################### verification' + currUser['verification'], sys.stderr)
 			headers = {'Content-Type': 'application/json'}
 			response = make_response(jsonify({"status": "OK"}), 200, headers)
 			response.set_cookie('username', currUser['username'])
@@ -99,17 +98,17 @@ class Login(Resource):
 			resp['status'] = "error"
 			resp['error'] = "User has not been validated. Check your email."
 			# print('#######################not validated', file=sys.stderr)
-			return resp
+			return resp, 400
 		elif micro_resp.json()['error'] == 'incorrect password':
 			resp['status'] = "error"
 			resp['error'] = "The entered password is incorrect."
 			# print('#######################wrong password', file=sys.stderr)
-			return resp
+			return resp, 400
 		else:
 			resp['status'] = "error"
 			resp['error'] = "The entered username doesn't exist."
 			# print('#######################bad username:' + str(args['username']), file=sys.stderr)
-			return resp
+			return resp, 400
 
 class Logout(Resource):
 	def post(self):
@@ -123,7 +122,7 @@ class Logout(Resource):
 			return response
 		except Exception as e:
 			print(e, sys.stderr)
-			return {'status': "error"}
+			return {'status': "error"}, 400
 
 class AddQuestion(Resource):
 	def post(self):
@@ -139,15 +138,15 @@ class AddQuestion(Resource):
 		parser.add_argument('tags', action='append')
 		args = parser.parse_args()
 		if args.get('title') is None:
-			return self._error('title required')
+			return _error('title required')
 		elif args.get('body') is None:
-			return self._error('body required')
+			return _error('body required')
 		elif args.get('tags') is None:
-			return self._error('tags required')
+			return _error('tags required')
 		resp = questions.add_question(args['title'], args['body'], args['tags'], username)
+		if resp['status'] == 'error':
+			return _error('Failed to add question')
 		return resp.json()
-	def _error(self, message):
-		return {'status': 'error', 'error': message}
 
 class GetQuestion(Resource):
 	def get(self, id):
@@ -161,7 +160,9 @@ class GetQuestion(Resource):
 		else:
 			user = request.remote_addr
 		resp2 = questions.get_question(id=id, user=user)
-		print("#######################" + str(resp2), sys.stderr)
+		if resp2.json()['status'] == 'error':
+			return {"status": "error"}, 400
+		#print("#######################" + str(resp2), sys.stderr)
 		return resp2.json()
 	
 	def delete(self, id):
@@ -176,9 +177,9 @@ class GetQuestion(Resource):
 			user = request.remote_addr
 			return {'status': 'error', 'error': 'not logged in'}, 400
 		resp2 = questions.delete_question(id=id, user=user)
-		if resp2.json()['status'] == 'ERROR':
+		if resp2.json()['status'] == 'error':
 			return {'status': 'error', 'error': 'wrong user'}, 400
-		print("#######################" + str(resp2), sys.stderr)
+		#print("#######################" + str(resp2), sys.stderr)
 		return resp2.json()
 
 
@@ -188,13 +189,13 @@ class AddAnswer(Resource):
 		password = request.cookies.get('password')
 		resp = account.authenticate(username, password)
 		if resp.json()['status'] == 'error':
-			return resp.json()
+			return resp.json(), 400
 		parser = reqparse.RequestParser()
 		parser.add_argument('body')
 		parser.add_argument('media', action='append')
 		args = parser.parse_args()
 		if args.get('body') is None:
-			return {'status': 'error', 'error':'body is required'}
+			return {'status': 'error', 'error':'body is required'}, 400
 		resp2 = questions.add_answer(body=args['body'], username=username, id=id, media=args.get('media'))
 		return resp2.json()
 
@@ -209,7 +210,7 @@ class Search(Resource):
 		parser.add_argument('has_media', type=inputs.boolean)
 		parser.add_argument('accepted', type=inputs.boolean)
 		args = parser.parse_args()
-		print('$$$$$$$$$$$$$$$$$$$$$$$$$$args:' + str(args), sys.stderr)
+		#print('$$$$$$$$$$$$$$$$$$$$$$$$$$args:' + str(args), sys.stderr)
 		timestamp = args['timestamp'] if args['timestamp'] is not None else time.time()
 		limit = args.get('limit')
 		if args['limit'] is not None:
@@ -243,7 +244,10 @@ class GetUser(Resource):
 		#resp = account.authenticate(cookieuser, password)
 		#if resp.json()['status'] == 'error':
 		#	return resp.json()
-		return account.getuser(username).json()
+		resp = account.getuser(username).json()
+		if resp['status'] == 'error':
+			return _error("Error in getting user for username {}".format(username))
+		return resp
 
 class GetUserQuestions(Resource):
 	def get(self, username):
@@ -254,7 +258,10 @@ class GetUserQuestions(Resource):
 		#resp = account.authenticate(cookieuser, password)
 		#if resp.json()['status'] == 'error':
 		#	return resp.json()
-		return account.getuserQ(username).json()
+		resp = account.getuserQ(username).json()
+		if resp['status'] == 'error':
+			return _error("Error in getting questions for user {}".format(username))
+		return resp
 
 class GetUserAnswers(Resource):
 	def get(self, username):
@@ -265,7 +272,10 @@ class GetUserAnswers(Resource):
 		#resp = account.authenticate(cookieuser, password)
 		#if resp.json()['status'] == 'error':
 		#	return resp.json()
-		return account.getuserA(username).json()
+		resp = account.getuserA(username).json()
+		if resp['status'] == 'error':
+			return _error("Error in getting answers for user {}".format(username))
+		return resp
 
 class GetQuestionPage(Resource):
 	def get(self, id):
@@ -287,19 +297,19 @@ class UpvoteQuestion(Resource):
 		#print('---------------------' + str(resp.json()), sys.stderr)
 		if resp.json()['status'] == 'error':
 			#print('---------------------' + str('hellooo'), sys.stderr)
-			return resp.json()
+			return resp.json(), 400
 		parser = reqparse.RequestParser()
 		#print('******************************' + str('1st'), sys.stderr)
 		parser.add_argument('upvote', type=inputs.boolean)
 		#print('******************************' + str('2nd'), sys.stderr)
 		args = parser.parse_args()
-		print('******************************' + str(args['upvote']), sys.stderr)
+		#print('******************************' + str(args['upvote']), sys.stderr)
 		action = None
 		if args.get('upvote') is None:
 			action = True
 		else:
 			action = args['upvote']
-		print(str(action) + '<- action', sys.stderr)
+		#print(str(action) + '<- action', sys.stderr)
 		return questions.upvote(action, id, username).json()
 class UpvoteAnswer(Resource):
 	def post(self, id):
@@ -309,13 +319,13 @@ class UpvoteAnswer(Resource):
 		#print('---------------------' + str(resp.json()), sys.stderr)
 		if resp.json()['status'] == 'error':
 			#print('---------------------' + str('hellooo'), sys.stderr)
-			return resp.json()
+			return resp.json(), 400
 		parser = reqparse.RequestParser()
 		#print('******************************' + str('1st'), sys.stderr)
 		parser.add_argument('upvote', type=inputs.boolean)
 		#print('******************************' + str('2nd'), sys.stderr)
 		args = parser.parse_args()
-		print('******************************' + str(args['upvote']), sys.stderr)
+		#print('******************************' + str(args['upvote']), sys.stderr)
 		action = None
 		if args.get('upvote') is None:
 			action = True
@@ -332,7 +342,7 @@ class AcceptAnswer(Resource):
 		#print('---------------------' + str(resp.json()), sys.stderr)
 		if resp.json()['status'] == 'error':
 			#print('---------------------' + str('hellooo'), sys.stderr)
-			return resp.json()
+			return resp.json(), 400
 		return questions.acceptanswer(id, username).json()
 
 
@@ -344,10 +354,10 @@ class AddMedia(Resource):
 		#print('---------------------' + str(resp.json()), sys.stderr)
 		if resp.json()['status'] == 'error':
 			#print('---------------------' + str('hellooo'), sys.stderr)
-			return resp.json()
+			return resp.json(), 400
 		file = request.files.get('content')
 		filetype = file.content_type
-		print('-------------------------' + str(file.content_type), sys.stderr)
+		#print('-------------------------' + str(file.content_type), sys.stderr)
 		b = bytearray(file.read())
 		cluster = Cluster(['130.245.171.50'])
 		session = cluster.connect(keyspace='stackoverflow')
@@ -387,6 +397,9 @@ def get_users_coll():
 	mydb = myclient['finalproject']
 	users = mydb['users']
 	return users
+
+def _error(message):
+		return {'status': 'error', 'error': message}, 400
 
 
 api.add_resource(Homepage, '/')
