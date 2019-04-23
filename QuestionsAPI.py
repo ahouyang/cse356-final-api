@@ -71,3 +71,6 @@ def acceptanswer(answerid, username):
 	'username': username
 	}
 	return requests.post(_url('/acceptanswer/' + answerid), json=json)
+
+def reset():
+	return requests.get(_url('/reset'))

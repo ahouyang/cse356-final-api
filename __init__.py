@@ -384,6 +384,10 @@ class GetMedia(Resource):
 		response.headers.set('Content-Type', filetype)
 		return response
 
+class Reset(Resource):
+	def get(self):
+		return questions.reset()
+
 
 def parse_args_list(argnames):
 	parser = reqparse.RequestParser()
@@ -423,6 +427,8 @@ api.add_resource(UpvoteAnswer, '/answers/<id>/upvote')
 api.add_resource(AcceptAnswer, '/answers/<id>/accept')
 api.add_resource(AddMedia, '/addmedia')
 api.add_resource(GetMedia, '/media/<id>')
+api.add_resource(Reset, '/reset')
+
 
 if __name__ == '__main__':
 	app.run(debug=True)
