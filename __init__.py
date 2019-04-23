@@ -362,8 +362,8 @@ class AddMedia(Resource):
 		cluster = Cluster(['130.245.171.50'])
 		session = cluster.connect(keyspace='stackoverflow')
 		media_id = self._generate_code()
-		cqlinsert = 'insert into media (id, content, type) values (%s, %s, %s);'
-		session.execute(cqlinsert, (media_id, b, filetype))
+		cqlinsert = 'insert into media (id, content, type, added) values (%s, %s, %s, %s);'
+		session.execute(cqlinsert, (media_id, b, filetype, False))
 		resp = {}
 		resp['status'] = 'OK'
 		resp['id'] = media_id
