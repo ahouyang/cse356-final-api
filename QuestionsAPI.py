@@ -4,12 +4,13 @@ import sys
 def _url(path):
 	return 'http://130.245.168.91' + path
 
-def add_question(title, body, tags, username):
+def add_question(title, body, tags, username, media):
 	return requests.post(_url('/add'), json={
 		'username': username,
 		'title':title,
 		'body':body,
-		'tags':tags
+		'tags':tags,
+		'media':media
 		})
 
 def get_question(id, user):

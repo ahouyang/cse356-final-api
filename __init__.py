@@ -136,6 +136,7 @@ class AddQuestion(Resource):
 		parser.add_argument('title')
 		parser.add_argument('body')
 		parser.add_argument('tags', action='append')
+		parser.add_argument('media', action='append')
 		args = parser.parse_args()
 		if args.get('title') is None:
 			return _error('title required')
@@ -143,9 +144,9 @@ class AddQuestion(Resource):
 			return _error('body required')
 		elif args.get('tags') is None:
 			return _error('tags required')
-		resp = questions.add_question(args['title'], args['body'], args['tags'], username)
+		resp = questions.add_question(args['title'], args['body'], args['tags'], username, args['media'])
 		if resp.json()['status'] == 'error':
-			return _error('Failed to add question')
+			return _error(resp.json().get('error') if resp.json().get('error') is not None else 'failed to add question')
 		return resp.json()
 
 class GetQuestion(Resource):
