@@ -1,7 +1,7 @@
-from flask import Flask, request, render_template, make_response, jsonify
-from flask_restful import Resource, Api, reqparse, inputs
-import pymongo
-import datetime
+from flask import Flask, request, render_template, make_response, jsonify 
+from flask_restful import Resource, Api, reqparse, inputs 
+import pymongo 
+import datetime 
 import sys
 # import tttalgorithm as ttt
 import smtplib, ssl
@@ -118,7 +118,6 @@ class Logout(Resource):
 			response = make_response(jsonify({"status": "OK"}), 200, headers)
 			response.set_cookie('username', '', expires = 0)
 			response.set_cookie('password', '', expires = 0)
-			response.set_cookie('grid', '', expires = 0)
 			return response
 		except Exception as e:
 			print(e, sys.stderr)
@@ -129,9 +128,10 @@ class AddQuestion(Resource):
 		# authenticate cookie, 
 		username = request.cookies.get('username')
 		password = request.cookies.get('password')
+		print('add question, username: {}, password: {}'.format(username, password), sys.stderr)
 		resp = account.authenticate(username, password)
 		if resp.json()['status'] == 'error':
-			return resp.json()
+			return resp.json(), 400
 		parser = reqparse.RequestParser()
 		parser.add_argument('title')
 		parser.add_argument('body')
@@ -144,7 +144,7 @@ class AddQuestion(Resource):
 		elif args.get('tags') is None:
 			return _error('tags required')
 		resp = questions.add_question(args['title'], args['body'], args['tags'], username)
-		if resp['status'] == 'error':
+		if resp.json()['status'] == 'error':
 			return _error('Failed to add question')
 		return resp.json()
 
