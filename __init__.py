@@ -377,7 +377,7 @@ class GetMedia(Resource):
 	def get(self, id):
 		cluster = Cluster(['130.245.171.50'])
 		session = cluster.connect(keyspace='stackoverflow')
-		cqlselect = "select * from media where id = '" + id + "';"
+		cqlselect = "select id, content, type, added from media where id = '" + id + "';"
 		row = session.execute(cqlselect)[0]
 		file = row[1]
 		filetype = row[2]
@@ -387,7 +387,7 @@ class GetMedia(Resource):
 
 class Reset(Resource):
 	def get(self):
-		return questions.reset()
+		return questions.reset().json()
 
 
 def parse_args_list(argnames):
