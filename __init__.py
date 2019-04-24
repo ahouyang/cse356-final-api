@@ -16,6 +16,9 @@ from cassandra.cluster import Cluster
 app = Flask(__name__)
 api = Api(app)
 
+cluster = Cluster(['130.245.171.50'])
+session = cluster.connect(keyspace='stackoverflow')
+
 class Homepage(Resource):
 	def get(self):
 		username = request.cookies.get('username')
@@ -360,8 +363,8 @@ class AddMedia(Resource):
 		filetype = file.content_type
 		#print('-------------------------' + str(file.content_type), sys.stderr)
 		b = bytearray(file.read())
-		cluster = Cluster(['130.245.171.50'])
-		session = cluster.connect(keyspace='stackoverflow')
+		# cluster = Cluster(['130.245.171.50'])
+		# session = cluster.connect(keyspace='stackoverflow')
 		media_id = self._generate_code()
 		cqlinsert = 'insert into media (id, content, type, added, poster) values (%s, %s, %s, %s, %s);'
 		session.execute(cqlinsert, (media_id, b, filetype, False, username))
@@ -375,8 +378,8 @@ class AddMedia(Resource):
 
 class GetMedia(Resource):
 	def get(self, id):
-		cluster = Cluster(['130.245.171.50'])
-		session = cluster.connect(keyspace='stackoverflow')
+		# cluster = Cluster(['130.245.171.50'])
+		# session = cluster.connect(keyspace='stackoverflow')
 		cqlselect = "select id, content, type, added from media where id = '" + id + "';"
 		row = session.execute(cqlselect)[0]
 		file = row[1]
