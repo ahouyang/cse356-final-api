@@ -16,7 +16,7 @@ from cassandra.cluster import Cluster
 app = Flask(__name__)
 api = Api(app)
 
-cluster = Cluster(['130.245.171.50'])
+cluster = Cluster(['192.168.122.21'])
 session = cluster.connect(keyspace='stackoverflow')
 
 class Homepage(Resource):
