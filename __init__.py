@@ -7,11 +7,12 @@ import sys
 import smtplib, ssl
 import string
 import random
-# import pika
+import pika
 import AccountAPI as account
 import QuestionsAPI as questions
 import time
 from cassandra.cluster import Cluster
+import base64
 
 app = Flask(__name__)
 api = Api(app)
@@ -363,6 +364,7 @@ class AddMedia(Resource):
 		filetype = file.content_type
 		#print('-------------------------' + str(file.content_type), sys.stderr)
 		b = bytearray(file.read())
+		b = base64.b64encode(b)
 		# cluster = Cluster(['130.245.171.50'])
 		# session = cluster.connect(keyspace='stackoverflow')
 		media_id = self._generate_code()
