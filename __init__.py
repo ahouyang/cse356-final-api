@@ -370,11 +370,20 @@ class AddMedia(Resource):
 		media_id = self._generate_code()
 		# cqlinsert = 'insert into media (id, content, type, added, poster) values (%s, %s, %s, %s, %s);'
 		# session.execute(cqlinsert, (media_id, b, filetype, False, username))
-		cols = '{},{},{},{},{}'.format(media_id, str(b), filetype, 'False', username)
+		cols = '{},{}'.format(media_id, str(b))
 		connection = pika.BlockingConnection(pika.ConnectionParameters('192.168.122.23'))
 		channel = connection.channel()
 		channel.queue_declare(queue='cassandra', durable=True)
 		channel.basic_publish(exchange='',routing_key='cassandra', body=cols)
+		mongo = {}
+		mongo['id'] = media_id
+		mongo['type'] = filetype
+		mongo['added'] = False
+		mongo['poster'] = username
+		mongo['collection'] = 'media'
+		dump = json.dumps(mongo)
+		channel.queue_declare(queue='mongo', durable=True)
+		channel.basic_publish(exchange='',routing_key='mongo', body=dump)
 		resp = {}
 		resp['status'] = 'OK'
 		resp['id'] = media_id
