@@ -58,7 +58,7 @@ class Verify(Resource):
 			return {"status":"OK"}
 		except Exception as e:
 			print(e, sys.stderr)
-			return {"status": "error"}, 400
+			return {"status": "error", "error":e}, 400
 	def get(self):
 		# TODO, have this return html saying "your account is verified" instead of this json
 		# OK or ERROR JSON should only be returned by POST, not GET
@@ -67,13 +67,13 @@ class Verify(Resource):
 			return {"status":"OK"}
 		except Exception as e:
 			print(e, sys.stderr)
-			return {"status": "error"}, 400
+			return {"status": "error", "error":e}, 400
 	def handleRequest(self, args):
 		# args = parse_args_list(['email', 'key'])
 		resp = account.verify(args['email'], args['key'])
 		if resp.json()['status'] == 'OK':
 			return
-		raise Exception(resp.json()['message'])
+		raise Exception(resp.json()['error'])
 
 class Login(Resource):
 
