@@ -228,6 +228,8 @@ class Search(Resource):
 				limit = 100
 		else:
 			limit = 25
+		if args['q'] == '':
+			args['q'] = None
 		# accepted = args['accepted'] if args['accepted'] is not None else False
 		resp = questions.search(timestamp, limit, args['q'], args['sort_by'], 
 									args['tags'], args['has_media'], args['accepted'])
