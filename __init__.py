@@ -405,7 +405,10 @@ class GetMedia(Resource):
 		# cluster = Cluster(['130.245.171.50'])
 		# session = cluster.connect(keyspace='stackoverflow')
 		cqlselect = "select id, content from media where id = '" + id + "';"
-		row = session.execute(cqlselect)[0]
+		rows = session.execute(cqlselect)
+		if not rows:
+			return {'status':'error'}, 400
+		row = rows[0]
 		file = row[1]
 		#filetype = row[2]
 		response = make_response(file)
