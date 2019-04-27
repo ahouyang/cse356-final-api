@@ -386,6 +386,7 @@ class AddMedia(Resource):
 		mongo['added'] = False
 		mongo['poster'] = username
 		mongo['collection'] = 'media'
+		mongo['action'] = 'insert'
 		dump = json.dumps(mongo)
 		channel.queue_declare(queue='mongo', durable=True)
 		channel.basic_publish(exchange='',routing_key='mongo', body=dump)
