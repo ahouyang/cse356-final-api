@@ -13,12 +13,17 @@ import QuestionsAPI as questions
 import time
 from cassandra.cluster import Cluster
 import base64
+import json
 
 app = Flask(__name__)
 api = Api(app)
 
 cluster = Cluster(['192.168.122.21'])
 session = cluster.connect(keyspace='stackoverflow')
+myclient = pymongo.MongoClient('mongodb://130.245.170.88:27017/')
+mydb = myclient['finalproject']
+users = mydb['users']
+media = mydb['media']
 
 class Homepage(Resource):
 	def get(self):
@@ -396,11 +401,13 @@ class GetMedia(Resource):
 	def get(self, id):
 		# cluster = Cluster(['130.245.171.50'])
 		# session = cluster.connect(keyspace='stackoverflow')
-		cqlselect = "select id, content, type, added from media where id = '" + id + "';"
+		cqlselect = "select id, content from media where id = '" + id + "';"
 		row = session.execute(cqlselect)[0]
 		file = row[1]
-		filetype = row[2]
+		#filetype = row[2]
 		response = make_response(file)
+		metadata = media.find_one({'id':id})
+		filetype = metadata['type']
 		response.headers.set('Content-Type', filetype)
 		return response
 
@@ -417,9 +424,6 @@ def parse_args_list(argnames):
 	return args
 
 def get_users_coll():
-	myclient = pymongo.MongoClient('mongodb://130.245.170.88:27017/')
-	mydb = myclient['finalproject']
-	users = mydb['users']
 	return users
 
 def _error(message):
