@@ -58,7 +58,7 @@ class Verify(Resource):
 			return {"status":"OK"}
 		except Exception as e:
 			print(e, sys.stderr)
-			return {"status": "error", "error":e}, 400
+			return {"status": "error", "error":str(e)}, 400
 	def get(self):
 		# TODO, have this return html saying "your account is verified" instead of this json
 		# OK or ERROR JSON should only be returned by POST, not GET
