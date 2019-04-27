@@ -67,7 +67,7 @@ class Verify(Resource):
 			return {"status":"OK"}
 		except Exception as e:
 			print(e, sys.stderr)
-			return {"status": "error", "error":e}, 400
+			return {"status": "error", "error":str(e)}, 400
 	def handleRequest(self, args):
 		# args = parse_args_list(['email', 'key'])
 		resp = account.verify(args['email'], args['key'])
