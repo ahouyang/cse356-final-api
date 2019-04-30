@@ -3,7 +3,7 @@ $(function(){
 	$.get('http://130.245.170.86/questions/' + questionID, (data, status, xhr) => {
 		console.log(data);
 		$('#title').text(data.question.title);
-		$('#body').text(data.question.body);
+		$('#body').html(data.question.body);
 		var date = new Date(data.question.timestamp*1000);
 		var year = date.getFullYear();
 		var day = date.getDate();
@@ -34,7 +34,7 @@ $(function(){
 			$('#' + answer.id).append('<div id="' + answer.id + 'stamp"></div>');
 			$('#' + answer.id + 'user').text(answer.user);
 			$('#' + answer.id + 'score').text('Score: ' + answer.score);
-			$('#' + answer.id + 'body').text(answer.body);
+			$('#' + answer.id + 'body').html(answer.body);
 			var date = new Date(answer.timestamp*1000);
 			var year = date.getFullYear();
 			var day = date.getDate();
