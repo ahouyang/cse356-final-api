@@ -74,29 +74,35 @@ $(function(){
 			if(data.status == 'OK'){
 				console.log('up:' + up + 'upvoted:'+upvoted+'downvoted'+downvoted+'score'+score);
 				if(up && upvoted){
-					$('#score').text('Score:' + (score - 1));
+					score = score - 1;
+					$('#score').text('Score:' + score);
 					upvoted = false;
 				}
 				else if(up && downvoted){
-					$('#score').text('Score:' + (score + 2));
+					score = score + 2;
+					$('#score').text('Score:' + score);
 					upvoted = true;
 					downvoted = false;
 				}
 				else if(up){
-					$('#score').text('Score:' + (score + 1));
+					score = score + 1;
+					$('#score').text('Score:' + score);
 					upvoted = true;
 				}
 				else if(!up && upvoted){
-					$('#score').text('Score:' + (score - 2));
+					score = score - 2;
+					$('#score').text('Score:' + score);
 					upvoted = false;
 					downvoted = true;
 				}
 				else if(!up && downvoted){
-					$('#score').text('Score:' + (score + 1));
+					score = score + 1;
+					$('#score').text('Score:' + score);
 					downvoted = false;
 				}
 				else if(!up){
-					$('#score').text('Score:' + (score - 1));
+					score = score - 1;
+					$('#score').text('Score:' + score);
 					downvoted = true;
 				}
 			}
