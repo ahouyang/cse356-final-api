@@ -96,7 +96,7 @@ $(function(){
 				}
 				else if(!up){
 					$('#score').text('Score:' + (score - 1));
-					downvoted = false;
+					downvoted = true;
 				}
 			}
 		});
