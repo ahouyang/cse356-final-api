@@ -70,7 +70,7 @@ $(function(){
 		});
 	});
 	function upvote(up){
-		$.post('http://130.245.170.86/questions/' + questionID + '/answers/add', $.param({'upvote':up}), (data, textStatus, xhr) => {
+		$.post('http://130.245.170.86/questions/' + questionID + '/upvote', $.param({'upvote':up}), (data, textStatus, xhr) => {
 			if(data.status == 'OK'){
 				if(up && upvoted){
 					$('#score').text('Score:' + score - 1);
