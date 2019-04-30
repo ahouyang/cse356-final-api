@@ -56,7 +56,7 @@ $(function(){
 
 	$('#postanswer').click((event) => {
 		var body = {};
-		body.body = $('#body').text();
+		body.body = $('#postanswerbody').val();
 		$.post('http://130.245.170.86/questions/' + questionID + '/answers/add', $.param(body), (data, textStatus, xhr) => {
 			if(data.status == 'OK'){
 				$('#success').text('Answer Posted!');
