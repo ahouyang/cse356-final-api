@@ -72,6 +72,7 @@ $(function(){
 	function upvote(up){
 		$.post('http://130.245.170.86/questions/' + questionID + '/upvote', $.param({'upvote':up}), (data, textStatus, xhr) => {
 			if(data.status == 'OK'){
+				console.log('up:' + up + 'upvoted:'+upvoted+'downvoted'+downvoted+'score'+score);
 				if(up && upvoted){
 					$('#score').text('Score:' + (score - 1));
 					upvoted = false;
