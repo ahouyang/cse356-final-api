@@ -2,7 +2,7 @@ $(function(){
 	var questionID = $('meta[name=questionID]').attr("content");
 	var upvoted = false;
 	var downvoted = false;
-	var score = null;
+	// var score = null;
 	$.get('http://130.245.170.86/questions/' + questionID, (data, status, xhr) => {
 		console.log(data);
 		$('#title').text(data.question.title);
@@ -74,35 +74,35 @@ $(function(){
 			if(data.status == 'OK'){
 				console.log('up:' + up + 'upvoted:'+upvoted+'downvoted'+downvoted+'score'+score);
 				if(up && upvoted){
-					score = score - 1;
-					$('#score').text('Score:' + score);
+					// score = score - 1;
+					$('#score').text('Score:' + data.score);
 					upvoted = false;
 				}
 				else if(up && downvoted){
-					score = score + 2;
-					$('#score').text('Score:' + score);
+					// score = score + 2;
+					$('#score').text('Score:' + data.score);
 					upvoted = true;
 					downvoted = false;
 				}
 				else if(up){
-					score = score + 1;
-					$('#score').text('Score:' + score);
+					// score = score + 1;
+					$('#score').text('Score:' + data.score);
 					upvoted = true;
 				}
 				else if(!up && upvoted){
-					score = score - 2;
-					$('#score').text('Score:' + score);
+					// score = score - 2;
+					$('#score').text('Score:' + data.score);
 					upvoted = false;
 					downvoted = true;
 				}
 				else if(!up && downvoted){
-					score = score + 1;
-					$('#score').text('Score:' + score);
+					// score = score + 1;
+					$('#score').text('Score:' + data.score);
 					downvoted = false;
 				}
 				else if(!up){
-					score = score - 1;
-					$('#score').text('Score:' + score);
+					// score = score - 1;
+					$('#score').text('Score:' + data.score);
 					downvoted = true;
 				}
 			}
