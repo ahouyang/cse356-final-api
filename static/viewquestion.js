@@ -53,4 +53,15 @@ $(function(){
 			$('#' + answer.id + 'stamp').text(posterstamp);
 		}
 	});
+
+	$('#postanswer').click((event) => {
+		var body = {};
+		body.body = $('#body').text();
+		$.post('http://130.245.170.86/questions/' + questionID + '/answers/add', $.param(body), (data, textStatus, xhr) => {
+			if(data.status == 'OK'){
+				$('#success').text('Answer Posted!');
+				$('#postanswer').attr("disabled", 'true');
+			}
+		});
+	});
 });
