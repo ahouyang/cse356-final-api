@@ -73,29 +73,29 @@ $(function(){
 		$.post('http://130.245.170.86/questions/' + questionID + '/upvote', $.param({'upvote':up}), (data, textStatus, xhr) => {
 			if(data.status == 'OK'){
 				if(up && upvoted){
-					$('#score').text('Score:' + score - 1);
+					$('#score').text('Score:' + (score - 1));
 					upvoted = false;
 				}
 				else if(up && downvoted){
-					$('#score').text('Score:' + score + 2);
+					$('#score').text('Score:' + (score + 2));
 					upvoted = true;
 					downvoted = false;
 				}
 				else if(up){
-					$('#score').text('Score:' + score + 1);
+					$('#score').text('Score:' + (score + 1));
 					upvoted = true;
 				}
 				else if(!up && upvoted){
-					$('#score').text('Score:' + score - 2);
+					$('#score').text('Score:' + (score - 2));
 					upvoted = false;
 					downvoted = true;
 				}
 				else if(!up && downvoted){
-					$('#score').text('Score:' + score + 1);
+					$('#score').text('Score:' + (score + 1));
 					downvoted = false;
 				}
 				else if(!up){
-					$('#score').text('Score:' + score - 1);
+					$('#score').text('Score:' + (score - 1));
 					downvoted = false;
 				}
 			}
