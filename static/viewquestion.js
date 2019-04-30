@@ -35,8 +35,22 @@ $(function(){
 			$('#' + answer.id + 'user').text(answer.user);
 			$('#' + answer.id + 'score').text('Score: ' + answer.score);
 			$('#' + answer.id + 'body').text(answer.body);
-			var stamp = "Submitted on " + answer.timestamp;
-			$('#' + answer.id + 'stamp').text(stamp);
+			var date = new Date(answer.timestamp*1000);
+			var year = date.getFullYear();
+			var day = date.getDate();
+			var month = date.getMonth() + 1;
+			// Hours part from the timestamp
+			var hours = date.getHours();
+			// Minutes part from the timestamp
+			var minutes = "0" + date.getMinutes();
+			// Seconds part from the timestamp
+			var seconds = "0" + date.getSeconds();
+			// Will display time in 10:30:23 format
+			var formattedTime = year + '-' + month + '-' + day + ', ' + hours + ':' 
+			 + minutes.substr(-2) + ':' + seconds.substr(-2);
+			var posterstamp = 'Submitted by ' + answer.user + ' on ' + formattedTime;
+			// var stamp = "Submitted on " + answer.timestamp;
+			$('#' + answer.id + 'stamp').text(posterstamp);
 		}
 	});
 });
