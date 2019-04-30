@@ -5,6 +5,9 @@ $(function(){
 		$('#title').text(data.question.title);
 		$('#body').text(data.question.body);
 		var date = new Date(data.question.timestamp*1000);
+		var year = date.getFullYear();
+		var day = date.getDate();
+		var month = date.getMonth() + 1;
 		// Hours part from the timestamp
 		var hours = date.getHours();
 		// Minutes part from the timestamp
@@ -12,7 +15,8 @@ $(function(){
 		// Seconds part from the timestamp
 		var seconds = "0" + date.getSeconds();
 		// Will display time in 10:30:23 format
-		var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+		var formattedTime = year + '-' + month + '-' + day + ', ' + hours + ':' 
+		 + minutes.substr(-2) + ':' + seconds.substr(-2);
 		var posterstamp = 'Submitted by ' + data.question.user.username + ' on ' + formattedTime;
 		$('#posterstamp').text(posterstamp);
 		var views = 'View Count: ' + data.question.view_count;
@@ -31,7 +35,7 @@ $(function(){
 			$('#' + answer.id + 'user').text(answer.user);
 			$('#' + answer.id + 'score').text('Score: ' + answer.score);
 			$('#' + answer.id + 'body').text(answer.body);
-			var stamp = "Submitted on " + data.timestamp;
+			var stamp = "Submitted on " + answer.timestamp;
 			$('#' + answer.id + 'stamp').text(stamp);
 		}
 	});
