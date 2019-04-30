@@ -14,7 +14,12 @@
 	<h2 id="title"></h2><br>
 	<p id="body"></p><br>
 	<div id="view_count"></div>
+	<div id="score"></div>
 	<div id="posterstamp"></div>
+	{% if username %}
+	<input type="button" id="upvotequestion" value="Upvote">
+	<input type="button" id="downvotequestion" value="Downvote">
+	{% endif %}
 	<div id="answers"></div>
 	{% if username %}
 	<h3>Submit an Answer!</h3>

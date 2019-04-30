@@ -1,9 +1,14 @@
 $(function(){
 	var questionID = $('meta[name=questionID]').attr("content");
+	var upvoted = false;
+	var downvoted = false;
+	var score = null;
 	$.get('http://130.245.170.86/questions/' + questionID, (data, status, xhr) => {
 		console.log(data);
 		$('#title').text(data.question.title);
 		$('#body').html(data.question.body);
+		$('#score').text(data.question.score);
+		score = data.question.score;
 		var date = new Date(data.question.timestamp*1000);
 		var year = date.getFullYear();
 		var day = date.getDate();
@@ -64,4 +69,37 @@ $(function(){
 			}
 		});
 	});
+	function upvote(up){
+		$.post('http://130.245.170.86/questions/' + questionID + '/answers/add', $.param({'upvote':up}), (data, textStatus, xhr) => {
+			if(data.status == 'OK'){
+				if(up && upvoted){
+					$('#score').text(score - 1);
+					upvoted = false;
+				}
+				else if(up && downvoted){
+					$('#score').text(score + 2);
+					upvoted = true;
+					downvoted = false;
+				}
+				else if(up){
+					$('#score').text(score + 1);
+					upvoted = true;
+				}
+				else if(!up && upvoted){
+					$('#score').text(score - 2);
+					upvoted = false;
+					downvoted = true;
+				}
+				else if(!up && downvoted){
+					$('#score').text(score + 1);
+					downvoted = false;
+				}
+				else if(!up){
+					$('#score').text(score - 1);
+					downvoted = false;
+				}
+			}
+		});
+	}
+
 });
