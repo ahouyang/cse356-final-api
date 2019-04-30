@@ -7,7 +7,7 @@ $(function(){
 		console.log(data);
 		$('#title').text(data.question.title);
 		$('#body').html(data.question.body);
-		$('#score').text(data.question.score);
+		$('#score').text('Score: ' + data.question.score);
 		score = data.question.score;
 		var date = new Date(data.question.timestamp*1000);
 		var year = date.getFullYear();
@@ -73,33 +73,40 @@ $(function(){
 		$.post('http://130.245.170.86/questions/' + questionID + '/answers/add', $.param({'upvote':up}), (data, textStatus, xhr) => {
 			if(data.status == 'OK'){
 				if(up && upvoted){
-					$('#score').text(score - 1);
+					$('#score').text('Score:' + score - 1);
 					upvoted = false;
 				}
 				else if(up && downvoted){
-					$('#score').text(score + 2);
+					$('#score').text('Score:' + score + 2);
 					upvoted = true;
 					downvoted = false;
 				}
 				else if(up){
-					$('#score').text(score + 1);
+					$('#score').text('Score:' + score + 1);
 					upvoted = true;
 				}
 				else if(!up && upvoted){
-					$('#score').text(score - 2);
+					$('#score').text('Score:' + score - 2);
 					upvoted = false;
 					downvoted = true;
 				}
 				else if(!up && downvoted){
-					$('#score').text(score + 1);
+					$('#score').text('Score:' + score + 1);
 					downvoted = false;
 				}
 				else if(!up){
-					$('#score').text(score - 1);
+					$('#score').text('Score:' + score - 1);
 					downvoted = false;
 				}
 			}
 		});
 	}
+
+	$('#upvotequestion').click((event) => {
+		upvote(true);
+	});
+	$('#downvotequestion').click((event) => {
+		upvote(false);
+	});
 
 });
