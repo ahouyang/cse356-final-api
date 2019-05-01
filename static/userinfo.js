@@ -44,7 +44,7 @@ $(function(){
 					$('#' + question.id + 'stamp').text(posterstamp);
 					if(logged_in){
 						//add delete question button
-						$('#' + question.id).append('<input type="button" id="delete_' + question.id + '" value="Delete" class="delete');
+						$('#' + question.id).append('<input type="button" id="delete_' + question.id + '" value="Delete" class="delete></input>');
 
 					}
 				});
