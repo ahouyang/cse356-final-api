@@ -1,7 +1,8 @@
 $(function(){
 	var username = $('meta[name=username]').attr("content");
 	var logged_in_meta = $('meta[name=logged_in]').attr("content");
-	var logged_in = logged_in_meta == 'yes' ? true : false;
+	var logged_in = logged_in_meta === 'yes' ? true : false;
+	// console.log('logged_in_meta');
 	$.get('http://130.245.170.86/user/' + username, (data) => {
 		if(data.status == 'OK'){
 			$('#email').text('Email: ' + data.user.email);
