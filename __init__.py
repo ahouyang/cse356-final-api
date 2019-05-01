@@ -132,6 +132,18 @@ class Logout(Resource):
 			print(e, sys.stderr)
 			return {'status': "error"}, 400
 
+	def get(self):
+		# Update cookie to invalid one; no access to database bc cookie just serves to initialize the board upon login
+		try:
+			headers = {'Content-Type': 'application/json'}
+			response = make_response(jsonify({"status": "OK"}), 200, headers)
+			response.set_cookie('username', '', expires = 0)
+			response.set_cookie('password', '', expires = 0)
+			return response
+		except Exception as e:
+			print(e, sys.stderr)
+			return {'status': "error"}, 400
+
 class AddQuestion(Resource):
 	def post(self):
 		# authenticate cookie, 
