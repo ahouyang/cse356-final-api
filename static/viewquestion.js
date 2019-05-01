@@ -60,6 +60,11 @@ $(function(){
 			var posterstamp = 'Submitted by ' + poster + ' on ' + formattedTime;
 			// var stamp = "Submitted on " + answer.timestamp;
 			$('#' + answer.id + 'stamp').html(posterstamp);
+
+			$('#' + answer.id).append('<input type="button" id="upvote_' + answer.id + '" value="Upvote" class="upvote">');
+			$('#' + answer.id).append('<input type="button" id="downvote_' + answer.id + '" value="Downvote" class="downvote">');
+
+
 		}
 	});
 
@@ -77,38 +82,7 @@ $(function(){
 		$.post('http://130.245.170.86/questions/' + questionID + '/upvote', $.param({'upvote':up}), (data, textStatus, xhr) => {
 			if(data.status == 'OK'){
 				console.log('up:' + up + 'upvoted:'+upvoted+'downvoted'+downvoted+'score'+score);
-				if(up && upvoted){
-					// score = score - 1;
-					$('#score').text('Score:' + data.score);
-					upvoted = false;
-				}
-				else if(up && downvoted){
-					// score = score + 2;
-					$('#score').text('Score:' + data.score);
-					upvoted = true;
-					downvoted = false;
-				}
-				else if(up){
-					// score = score + 1;
-					$('#score').text('Score:' + data.score);
-					upvoted = true;
-				}
-				else if(!up && upvoted){
-					// score = score - 2;
-					$('#score').text('Score:' + data.score);
-					upvoted = false;
-					downvoted = true;
-				}
-				else if(!up && downvoted){
-					// score = score + 1;
-					$('#score').text('Score:' + data.score);
-					downvoted = false;
-				}
-				else if(!up){
-					// score = score - 1;
-					$('#score').text('Score:' + data.score);
-					downvoted = true;
-				}
+				$('#score').text('Score:' + data.score);
 			}
 		});
 	}
@@ -119,5 +93,28 @@ $(function(){
 	$('#downvotequestion').click((event) => {
 		upvote(false);
 	});
+
+	$(document).on('click', '.upvote', (event) => {
+		var idtag = event.target.id;
+		var answerid = idtag.substring(7, idtag.length);
+		upvote_answer(true, answerid);
+	});
+
+	$(document).on('click', '.downvote', (event) => {
+		var idtag = event.target.id;
+		var answerid = idtag.substring(9, idtag.length);
+		upvote_answer(9, answerid);
+	});
+
+	function upvote_answer(up, id){
+		$.post('http://130.245.170.86/answers/' + answer + '/upvote', $.param({'upvote':up}), (data, textStatus, xhr) => {
+			if(data.status == 'OK'){
+				// console.log('up:' + up + 'upvoted:'+upvoted+'downvoted'+downvoted+'score'+score);
+				$('#' + id + 'score').text('Score:' + data.score);
+			}
+		});
+	}
+
+
 
 });
