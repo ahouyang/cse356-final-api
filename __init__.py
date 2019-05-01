@@ -470,7 +470,7 @@ api.add_resource(AcceptAnswer, '/answers/<id>/accept')
 api.add_resource(AddMedia, '/addmedia')
 api.add_resource(GetMedia, '/media/<id>')
 api.add_resource(Reset, '/reset')
-api.add_resource(UserInfo, '/userinfo/<id>')
+api.add_resource(UserInfo, '/userinfo/<username>')
 
 
 if __name__ == '__main__':
