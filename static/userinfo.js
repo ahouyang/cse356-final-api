@@ -42,11 +42,11 @@ $(function(){
 					var posterstamp = 'Submitted by ' + question.user.username + ' on ' + formattedTime;
 					// var stamp = "Submitted on " + question.timestamp;
 					$('#' + question.id + 'stamp').text(posterstamp);
-					console.log('logged_in_meta:' + logged_in_meta + ' logged_in:' + logged_in);
+					console.log('outside if logged_in_meta:' + logged_in_meta + ' logged_in:' + logged_in);
 
 					if(logged_in){
 						//add delete question button
-						console.log('logged_in_meta:' + logged_in_meta + ' logged_in:' + logged_in);
+						console.log('in if logged_in_meta:' + logged_in_meta + ' logged_in:' + logged_in);
 						$('#' + question.id).append('<input type="button" id="delete_' + question.id + '" value="Delete" class="delete>');
 
 					}
