@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+	{% if logged_in %}
+	<meta name="logged_in" content="{{ logged_in }}">
+	{% endif %}
+	{% if username %}
+	<meta name="username" content="{{ username }}">
+	{% endif %}
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='index.css') }}"/>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="{{url_for('static', filename='js.cookie.js')}}"></script>
-	<script type="text/javascript" src="{{url_for('static', filename='index.js')}}"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='userinfo.js')}}"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>CSE356 Final Project</title>
 </head>
@@ -14,14 +20,11 @@
 	<div class="container-fluid">
 		{% if username %}
 		<div>Welcome {{ username }}</div>
-		<a href="http://130.245.170.86/logout" class="btn btn-default" id="logout">Logout</a>
-		<a href="http://130.245.170.86/postquestion" class="btn btn-default" id="postquestion">Post a Question</a>
-		{% else %}
-		<a href="http://130.245.170.86/login" class="btn btn-default" id="login">Login</a>
-		<a href="http://130.245.170.86/adduser" class="btn btn-default" id="signup">Sign Up</a>
-		<a href="http://130.245.170.86/userinfo" class="btn btn-default" id="userinfo">Account Information</a>
+		<div id="email"></div>
+		<div id="reputation"></div>
 		{% endif %}
 		<div id="questions"></div>
+		<div id="answers"></div>
 	</div>
 </body>
 </html>

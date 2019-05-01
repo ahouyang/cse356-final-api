@@ -417,6 +417,18 @@ class GetMedia(Resource):
 		response.headers.set('Content-Type', filetype)
 		return response
 
+class UserInfo(Resource):
+	def get(self, username):
+		cookieuser = request.cookies.get('username')
+		password = request.cookies.get('password')
+		resp = account.authenticate(cookieuser, password)
+		if resp.json()['status'] == 'error':
+			cookieuser = None
+		headers = {'Content-Type': 'text/html'}
+		if cookieuser is None or cookieuser != username:
+			return make_response(render_template('userinfo.html', username=username))
+		return make_response(render_template('userinfo.html', logged_in='yes', username=username))
+
 class Reset(Resource):
 	def get(self):
 		return questions.reset().json()
@@ -458,6 +470,7 @@ api.add_resource(AcceptAnswer, '/answers/<id>/accept')
 api.add_resource(AddMedia, '/addmedia')
 api.add_resource(GetMedia, '/media/<id>')
 api.add_resource(Reset, '/reset')
+api.add_resource(UserInfo, '/userinfo')
 
 
 if __name__ == '__main__':
