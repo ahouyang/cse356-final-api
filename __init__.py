@@ -434,6 +434,7 @@ class UserInfo(Resource):
 		cookieuser = request.cookies.get('username')
 		password = request.cookies.get('password')
 		resp = account.authenticate(cookieuser, password)
+		print('username: ' + username + 'cookie: ' + cookieuser, sys.stderr)
 		if resp.json()['status'] == 'error':
 			cookieuser = None
 		headers = {'Content-Type': 'text/html'}
