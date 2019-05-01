@@ -37,6 +37,8 @@ $(function(){
 			$('#answers').append('<div id="' + answer.id + '"></div>');
 			$('#' + answer.id).append('<h4 id="' + answer.id + 'user"></h4>');
 			$('#' + answer.id).append('<div id="' + answer.id + 'score"></div>');
+			$('#' + answer.id).append('<input type="button" id="upvote_' + answer.id + '" value="Upvote" class="upvote">');
+			$('#' + answer.id).append('<input type="button" id="downvote_' + answer.id + '" value="Downvote" class="downvote">');
 			$('#' + answer.id).append('<div id="' + answer.id + 'body"></div>');
 			$('#' + answer.id).append('<div id="' + answer.id + 'stamp"></div>');
 			$('#' + answer.id + 'user').text(answer.user);
@@ -61,8 +63,6 @@ $(function(){
 			// var stamp = "Submitted on " + answer.timestamp;
 			$('#' + answer.id + 'stamp').html(posterstamp);
 
-			$('#' + answer.id).append('<input type="button" id="upvote_' + answer.id + '" value="Upvote" class="upvote">');
-			$('#' + answer.id).append('<input type="button" id="downvote_' + answer.id + '" value="Downvote" class="downvote">');
 
 
 		}
