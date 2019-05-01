@@ -107,7 +107,7 @@ $(function(){
 	});
 
 	function upvote_answer(up, id){
-		$.post('http://130.245.170.86/answers/' + answer + '/upvote', $.param({'upvote':up}), (data, textStatus, xhr) => {
+		$.post('http://130.245.170.86/answers/' + id + '/upvote', $.param({'upvote':up}), (data, textStatus, xhr) => {
 			if(data.status == 'OK'){
 				// console.log('up:' + up + 'upvoted:'+upvoted+'downvoted'+downvoted+'score'+score);
 				$('#' + id + 'score').text('Score:' + data.score);
