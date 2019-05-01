@@ -56,7 +56,8 @@ $(function(){
 	});
 
 	$('.delete').click((event) => {
-		var id = event.target.id;
+		var delete_id = event.target.id;
+		var id = delete_id.substring(8, delete_id.length);
 		$.ajax({
 		    url: 'http://130.245.170.86/questions/' + id,
 		    type: 'DELETE',
