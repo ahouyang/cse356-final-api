@@ -22,8 +22,10 @@ $(function(){
 		// Will display time in 10:30:23 format
 		var formattedTime = year + '-' + month + '-' + day + ', ' + hours + ':' 
 		 + minutes.substr(-2) + ':' + seconds.substr(-2);
-		var posterstamp = 'Submitted by ' + data.question.user.username + ' on ' + formattedTime;
-		$('#posterstamp').text(posterstamp);
+		var poster = '<a href="http://130.245.170.86/userinfo/' + data.question.user.username + '">' + 
+				data.question.user.username + '</a>';
+		var posterstamp = 'Submitted by ' + poster + ' on ' + formattedTime;
+		$('#posterstamp').html(posterstamp);
 		var views = 'View Count: ' + data.question.view_count;
 		$('#view_count').text(views);
 	});
@@ -53,9 +55,11 @@ $(function(){
 			// Will display time in 10:30:23 format
 			var formattedTime = year + '-' + month + '-' + day + ', ' + hours + ':' 
 			 + minutes.substr(-2) + ':' + seconds.substr(-2);
-			var posterstamp = 'Submitted by ' + answer.user + ' on ' + formattedTime;
+			var poster = '<a href="http://130.245.170.86/userinfo/' + answer.user + '">' + 
+				answer.user + '</a>';
+			var posterstamp = 'Submitted by ' + poster + ' on ' + formattedTime;
 			// var stamp = "Submitted on " + answer.timestamp;
-			$('#' + answer.id + 'stamp').text(posterstamp);
+			$('#' + answer.id + 'stamp').html(posterstamp);
 		}
 	});
 
