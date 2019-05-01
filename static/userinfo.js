@@ -22,7 +22,7 @@ $(function(){
 					$('#' + question.id).append('<div id="' + question.id + 'score"></div>');
 					$('#' + question.id).append('<div id="' + question.id + 'body"></div>');
 					$('#' + question.id).append('<div id="' + question.id + 'stamp"></div>');
-					$('#' + question.id + 'user').text(question.user);
+					$('#' + question.id + 'title').text(question.title);
 					$('#' + question.id + 'score').text('Score: ' + question.score);
 					$('#' + question.id + 'body').html(question.body);
 					var date = new Date(question.timestamp*1000);
