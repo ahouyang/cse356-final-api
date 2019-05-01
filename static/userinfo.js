@@ -58,7 +58,7 @@ $(function(){
 	$(document).on('click', '.delete', (event) => {
 		console.log('in click handler');
 		var delete_id = event.target.id;
-		var id = delete_id.substring(8, delete_id.length);
+		var id = delete_id.substring(7, delete_id.length);
 		$.ajax({
 		    url: 'http://130.245.170.86/questions/' + id,
 		    type: 'DELETE',
