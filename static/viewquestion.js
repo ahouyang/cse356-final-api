@@ -82,7 +82,7 @@ $(function(){
 		$.post('http://130.245.170.86/questions/' + questionID + '/upvote', $.param({'upvote':up}), (data, textStatus, xhr) => {
 			if(data.status == 'OK'){
 				console.log('up:' + up + 'upvoted:'+upvoted+'downvoted'+downvoted+'score'+score);
-				$('#score').text('Score:' + data.score);
+				$('#score').text('Score: ' + data.score);
 			}
 		});
 	}
@@ -110,7 +110,7 @@ $(function(){
 		$.post('http://130.245.170.86/answers/' + id + '/upvote', $.param({'upvote':up}), (data, textStatus, xhr) => {
 			if(data.status == 'OK'){
 				// console.log('up:' + up + 'upvoted:'+upvoted+'downvoted'+downvoted+'score'+score);
-				$('#' + id + 'score').text('Score:' + data.score);
+				$('#' + id + 'score').text('Score: ' + data.score);
 			}
 		});
 	}
