@@ -17,7 +17,7 @@ $(function(){
 				var id = questions[i];
 				$.get('http://130.245.170.86/questions/' + id, (data) => {
 					var question = data.question;
-					$('#answers').append('<div id="' + question.id + '"></div>');
+					$('#questions').append('<div id="' + question.id + '"></div>');
 					$('#' + question.id).append('<h3 id="' + question.id + 'title"></h3>');
 					$('#' + question.id).append('<div id="' + question.id + 'score"></div>');
 					$('#' + question.id).append('<div id="' + question.id + 'body"></div>');
