@@ -103,7 +103,7 @@ $(function(){
 	$(document).on('click', '.downvote', (event) => {
 		var idtag = event.target.id;
 		var answerid = idtag.substring(9, idtag.length);
-		upvote_answer(9, answerid);
+		upvote_answer(false, answerid);
 	});
 
 	function upvote_answer(up, id){
