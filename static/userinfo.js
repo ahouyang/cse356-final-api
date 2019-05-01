@@ -21,7 +21,7 @@ $(function(){
 					$('#' + question.id).append('<h4 id="' + question.id + 'title"></h4>');
 					$('#' + question.id).append('<div id="' + question.id + 'score"></div>');
 					$('#' + question.id).append('<div id="' + question.id + 'body"></div>');
-					$('#' + answer.id).append('<div id="' + answer.id + 'stamp"></div>');
+					$('#' + question.id).append('<div id="' + question.id + 'stamp"></div>');
 					$('#' + question.id + 'user').text(question.user);
 					$('#' + question.id + 'score').text('Score: ' + question.score);
 					$('#' + question.id + 'body').html(question.body);
