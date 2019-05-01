@@ -55,7 +55,7 @@ $(function(){
 		}
 	});
 
-	$('.delete').on('click', (event) => {
+	$(document).on('click', '.delete', (event) => {
 		console.log('in click handler');
 		var delete_id = event.target.id;
 		var id = delete_id.substring(8, delete_id.length);
