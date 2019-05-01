@@ -47,7 +47,7 @@ $(function(){
 					if(logged_in){
 						//add delete question button
 						console.log('in if logged_in_meta:' + logged_in_meta + ' logged_in:' + logged_in);
-						$('#' + question.id).append('<input type="button" id="delete_' + question.id + '" value="Delete" class="delete>');
+						$('#' + question.id).append('<input type="button" id="delete_' + question.id + '" value="Delete" class="delete">');
 
 					}
 				});
