@@ -47,7 +47,7 @@ def search(timestamp, limit, searchquery, sort_by, tags, has_media, accepted):
 	'has_media': has_media,
 	'accepted': accepted
 	}
-	print('-----------------------------' + str(json), sys.stderr)
+	# print('-----------------------------' + str(json), sys.stderr)
 	return requests.post(_url('/search'), json=json)
 
 def get_topten():
