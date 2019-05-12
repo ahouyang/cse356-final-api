@@ -106,17 +106,17 @@ class Login(Resource):
 		elif micro_resp.json()['error'] == 'not verified':
 			resp['status'] = "error"
 			resp['error'] = "User has not been validated. Check your email."
-			print('#######################not validated', file=sys.stderr)
+			print('#######################not validated', sys.stderr)
 			return resp, 400
 		elif micro_resp.json()['error'] == 'incorrect password':
 			resp['status'] = "error"
 			resp['error'] = "The entered password is incorrect."
-			print('#######################wrong password', file=sys.stderr)
+			print('#######################wrong password', sys.stderr)
 			return resp, 400
 		else:
 			resp['status'] = "error"
 			resp['error'] = "The entered username doesn't exist."
-			print('#######################bad username:' + str(args['username']), file=sys.stderr)
+			print('#######################bad username:' + str(args['username']), sys.stderr)
 			return resp, 400
 
 class Logout(Resource):
