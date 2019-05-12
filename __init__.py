@@ -149,7 +149,7 @@ class AddQuestion(Resource):
 		# authenticate cookie, 
 		username = request.cookies.get('username')
 		password = request.cookies.get('password')
-		print('add question, username: {}, password: {}'.format(username, password), sys.stderr)
+		# print('add question, username: {}, password: {}'.format(username, password), sys.stderr)
 		resp = account.authenticate(username, password)
 		if resp.json()['status'] == 'error':
 			return resp.json(), 400
@@ -434,7 +434,7 @@ class UserInfo(Resource):
 		cookieuser = request.cookies.get('username')
 		password = request.cookies.get('password')
 		resp = account.authenticate(cookieuser, password)
-		print('username: ' + username + 'cookie: ' + cookieuser, sys.stderr)
+		# print('username: ' + username + 'cookie: ' + cookieuser, sys.stderr)
 		if resp.json()['status'] == 'error':
 			cookieuser = None
 		headers = {'Content-Type': 'text/html'}
