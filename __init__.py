@@ -106,7 +106,7 @@ class Login(Resource):
 		elif micro_resp.json()['error'] == 'not verified':
 			resp['status'] = "error"
 			resp['error'] = "User has not been validated. Check your email."
-			print('#######################not validated', sys.stderr)
+			print('user: {} not validated'.format(args['username']), sys.stderr)
 			return resp, 400
 		elif micro_resp.json()['error'] == 'incorrect password':
 			resp['status'] = "error"
