@@ -390,7 +390,7 @@ class AddMedia(Resource):
 		# cqlinsert = 'insert into media (id, content, type, added, poster) values (%s, %s, %s, %s, %s);'
 		# session.execute(cqlinsert, (media_id, b, filetype, False, username))
 		cols = '{},{}'.format(media_id, str(b))
-		connection = pika.BlockingConnection(pika.ConnectionParameters('192.168.122.23'))
+		connection = pika.BlockingConnection(pika.ConnectionParameters('192.168.122.47'))
 		channel = connection.channel()
 		channel.queue_declare(queue='cassandra', durable=True)
 		channel.basic_publish(exchange='',routing_key='cassandra', body=cols)
