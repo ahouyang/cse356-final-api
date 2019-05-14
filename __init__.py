@@ -14,9 +14,12 @@ import time
 from cassandra.cluster import Cluster
 import base64
 import json
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 api = Api(app)
+
 
 cluster = Cluster(['192.168.122.21'])
 session = cluster.connect(keyspace='stackoverflow')
